@@ -10,7 +10,7 @@ _`.editorconfig`, `.gitattributes`, `.gitignore`, `.travis.yml`, `package.json`.
 
 ---
 
-### Памятка
+### TEST
 
 #### 1. Зарегистрируйтесь на Гитхабе
 
