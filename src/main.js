@@ -4,7 +4,7 @@ const TASK_COUNT = 5;
 
 // ----------------- template -------------------------
 
-// `Звание пользователя`
+// Звание пользователя
 const createProfileTemplate = () => (
   `<section class="header__profile profile">
     <p class="profile__rating">Movie Buff</p>
@@ -13,7 +13,7 @@ const createProfileTemplate = () => (
 );
 
 
-// `Навигация`
+// Навигация
 const createMainNavigationTemplate = () => (
   `<nav class="main-navigation">
      <a href="#all" class="main-navigation__item main-navigation__item--active">All movies</a>
@@ -25,7 +25,7 @@ const createMainNavigationTemplate = () => (
 );
 
 
-// `Cортировка`
+// Cортировка
 const createSortTemplate = () => (
   `<ul class="sort">
     <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
@@ -279,7 +279,6 @@ const render = (container, template, place = `beforeend`) => {
 
 
 //  ----------------------- containers -----------------------
-
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
@@ -297,23 +296,14 @@ const taskListElement = siteMainElement.querySelector(`.films-list__container`);
 // счётчик для фильмов сверху`
 new Array(TASK_COUNT)
   .fill(``)
-  .forEach(
-      () => render(taskListElement, createFilmCardTaskTemplate())
-  );
+  .forEach(() => render(taskListElement, createFilmCardTaskTemplate()));
 
 // блоки экстра фильмы
-const extraListElement = siteMainElement.querySelectorAll(`.films .films-list--extra .films-list__container`);
-
-// счётчик экстра фильмов
-for (let i = 0; i < extraListElement.length; i++) {
-  for (let j = 1; j <= 1; j++) {
-    extraListElement.innerHTML +=
-    new Array(2)
-      .fill(``)
-      .forEach(
-          () => render(extraListElement[i], createFilmCardTaskTemplate())
-      );
-  }
+const extraListElements = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
+for (let i = 0; i < extraListElements.length; i++) {
+  new Array(2)
+    .fill(``)
+    .forEach(() => render(extraListElements[i], createFilmCardTaskTemplate()));
 }
 
 
