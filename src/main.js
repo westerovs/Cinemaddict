@@ -1,11 +1,17 @@
+// профиль
 import {createProfileTemplate} from './components/profile.js';
-import {createMainNavigationTemplate} from './components/main-nav.js';
+// навигация
+import {createNavigationTemplate} from './components/navigation.js';
+// сортировка
 import {createSortTemplate} from './components/sort.js';
+// доска фильмов
 import {createFilmsListTemplate} from './components/film-list.js';
-import {createShowMoreTemplate} from './components/show-more-btn.js';
+// кнопка показать больше
+import {createBtnShowMoreTemplate} from './components/btn-show-more.js';
+// карточка одного фильма
 import {createFilmCardTaskTemplate} from './components/film-card-task.js';
-// поп-арт. пока закоментрировал, что бы не закрывал проект
-// import {createFilmDetailsTaskTemplate} from './components/pop-art.js';
+// pоп-арт. пока закоментрировал, что бы не закрывал проект
+// import {createPopArtFilmlsTaskTemplate} from './components/pop-art.js';
 
 
 const TASK_COUNT = 5;
@@ -26,7 +32,7 @@ const siteMainElement = document.querySelector(`.main`);
 
 // --------------------- рендер на страницу -------------------
 render(siteHeaderElement, createProfileTemplate());
-render(siteMainElement, createMainNavigationTemplate());
+render(siteMainElement, createNavigationTemplate());
 render(siteMainElement, createSortTemplate());
 render(siteMainElement, createFilmsListTemplate());
 
@@ -45,10 +51,10 @@ for (let i = 0; i < extraListElements.length; i++) {
 
 // кнопка LoadMore
 const boardElement = siteMainElement.querySelector(`.films-list`);
-render(boardElement, createShowMoreTemplate());
+render(boardElement, createBtnShowMoreTemplate());
 
 
 // поп-арт - закоментировал тут и pop-art.js, что бы не закрывал проект
 // const siteBodyElement = document.querySelector(`body`);
 // const popElement = siteBodyElement.querySelector(`footer`);
-// render(popElement, createFilmDetailsTaskTemplate(), `afterEnd`);
+// render(popElement, createPopArtFilmlsTaskTemplate(), `afterEnd`);

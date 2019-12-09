@@ -1,5 +1,5 @@
 // поп-арт - закоментировал тут и в main.js, т.к он контент закрывает
-// export const createFilmDetailsTaskTemplate = () => (
+// export const createPopArtFilmlsTaskTemplate = () => (
 //   `<section class="film-details">
 //     <form class="film-details__inner" action="" method="get">
 //       <div class="form-details__top-container">
