@@ -12,18 +12,18 @@ import {createFilmCardTaskTemplate} from './components/film-card-task.js';
 import {createBtnShowMoreTemplate} from './components/btn-show-more.js';
 // pоп-арт. пока закоментрировал, что бы не закрывал проект
 // import {createPopArtFilmlsTaskTemplate} from './components/pop-art.js';
-import {
-  randomItem,
-  RatingName,
-  FilmName,
-  DescriptionFilmName,
-  DescriptionSet,
-  randomNumber,
-  Posters,
-  filmGenre
-} from './mock/task.js';
+// import {
+//   randomItem,
+//   RatingName,
+//   FilmName,
+//   DescriptionFilmName,
+//   DescriptionSet,
+//   randomNumber,
+//   Posters,
+//   filmGenre
+// } from './mock/task.js';
 
-const TASK_COUNT_START = 5;
+// const TASK_COUNT_START = 5;
 
 //  ---------------------- ф-ция рендер -------------------
 const render = (container, template, place = `beforeend`) => {
