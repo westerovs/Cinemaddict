@@ -1,5 +1,6 @@
 // рейтинг в профиле
-const RATINGNAME = [`Movie Buff`,
+const RATINGNAME = [
+  `Movie Buff`,
   `King`,
   `Gury`,
   `Expert`,
@@ -79,9 +80,9 @@ const MONTHNAMES = [
 ];
 
 // рендер текст
-function randomItem(item) {
-  let random = Math.floor(Math.random() * item.length);
-  return item[random];
+function randomItem(items) {
+  let random = Math.floor(Math.random() * items.length);
+  return items[random];
 }
 
 // рендер случайных чисел

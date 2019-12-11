@@ -4,6 +4,7 @@ import {createSortTemplate} from './components/sort.js';
 import {createFilmsListTemplate} from './components/film-list.js';
 import {createFilmCardTaskTemplate} from './components/film-card-task.js';
 import {createBtnShowMoreTemplate} from './components/btn-show-more.js';
+import {generateNavItems} from './mock/navigation-mock.js';
 // поп-арт закоментировал, что бы не закрывал страницу
 // import {createPopArtFilmlsTaskTemplate} from './components/pop-art.js';
 // import {commentTemplate} from './mock/commit.js';
@@ -27,7 +28,9 @@ const siteMainElement = document.querySelector(`.main`);
 
 // --------------------- рендер на страницу -------------------
 render(siteHeaderElement, createProfileTemplate());
-render(siteMainElement, createNavigationTemplate());
+
+const navigationRend = generateNavItems();
+render(siteMainElement, createNavigationTemplate(navigationRend));
 render(siteMainElement, createSortTemplate());
 render(siteMainElement, createFilmsListTemplate());
 
