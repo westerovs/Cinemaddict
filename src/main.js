@@ -2,9 +2,9 @@ import {createProfileTemplate} from './components/profile.js';
 import {createNavigationTemplate} from './components/navigation.js';
 import {createSortTemplate} from './components/sort.js';
 import {createFilmsListTemplate} from './components/film-list.js';
-import {createFilmCardTaskTemplate} from './components/film-card-task.js';
+import {createFilmCardkTemplate} from './components/film-card-task.js';
 import {createBtnShowMoreTemplate} from './components/btn-show-more.js';
-import {generateNavItems} from './mock/navigation-mock.js';
+// import {generateNavItems} from './mock/navigation-mock.js';
 // поп-арт закоментировал, что бы не закрывал страницу
 // import {createPopArtFilmlsTaskTemplate} from './components/pop-art.js';
 // import {commentTemplate} from './mock/commit.js';
@@ -29,16 +29,17 @@ const siteMainElement = document.querySelector(`.main`);
 // --------------------- рендер на страницу -------------------
 render(siteHeaderElement, createProfileTemplate());
 
-const navigationRend = generateNavItems();
-render(siteMainElement, createNavigationTemplate(navigationRend));
+// const navigationRend = generateNavItems();
+render(siteMainElement, createNavigationTemplate());
 render(siteMainElement, createSortTemplate());
 render(siteMainElement, createFilmsListTemplate());
 
 
 // контейнер фильмов верхний
 const taskListElement = siteMainElement.querySelector(`.films-list__container`);
+// const filmEnter = createRandomFilm();
 function filmRender() {
-  new Array(TASK_COUNT).fill(``).forEach(() => render(taskListElement, createFilmCardTaskTemplate()));
+  new Array(TASK_COUNT).fill(``).forEach(() => render(taskListElement, createFilmCardkTemplate()));
   return TASK_COUNT;
 }
 filmRender(TASK_COUNT);
@@ -47,7 +48,7 @@ filmRender(TASK_COUNT);
 // блоки экстра фильмы
 const extraListElements = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
 for (let i = 0; i < extraListElements.length; i++) {
-  new Array(2).fill(``).forEach(() => render(extraListElements[i], createFilmCardTaskTemplate()));
+  new Array(2).fill(``).forEach(() => render(extraListElements[i], createFilmCardkTemplate()));
 }
 
 
