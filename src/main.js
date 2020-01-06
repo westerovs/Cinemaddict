@@ -1,17 +1,23 @@
 import {createProfileTemplate} from './components/profile.js';
-import {createMainNavigationTemplate} from './components/main-nav.js';
+import {createNavigationTemplate} from './components/navigation.js';
 import {createSortTemplate} from './components/sort.js';
 import {createFilmsListTemplate} from './components/film-list.js';
-import {createShowMoreTemplate} from './components/show-more-btn.js';
-import {createFilmCardTaskTemplate} from './components/film-card-task.js';
-// поп-арт. пока закоментрировал, что бы не закрывал проект
-// import {createFilmDetailsTaskTemplate} from './components/pop-art.js';
+import {createFilmCardTemplate} from './components/film-card-task.js';
+import {createBtnShowMoreTemplate} from './components/btn-show-more.js';
+
+import {createRandomFilm} from './mock/task.js';
+
+import {getSort} from './mock/function-sort.js';
+// import {generateNavItems} from './mock/navigation-mock.js';
+// поп-арт закоментировал, что бы не закрывал страницу
+// import {createPopArtFilmlsTaskTemplate} from './components/pop-art.js';
+// import {commentTemplate} from './mock/commit.js';
 
 
 const TASK_COUNT = 5;
 
 
-//  ---------------------- ф-ция рендер -------------------
+// ----------------------- ф-ция рендер -------------------
 const render = (container, template, place = `beforeend`) => {
   if (container instanceof Element) {
     container.insertAdjacentHTML(place, template);
@@ -19,36 +25,82 @@ const render = (container, template, place = `beforeend`) => {
 };
 
 
-//  ----------------------- containers -----------------------
+// ----------------------- containers -----------------------
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
 
-// --------------------- рендер на страницу -------------------
+// ----------------------- рендер на страницу -------------------
 render(siteHeaderElement, createProfileTemplate());
-render(siteMainElement, createMainNavigationTemplate());
+render(siteMainElement, createNavigationTemplate());
 render(siteMainElement, createSortTemplate());
 render(siteMainElement, createFilmsListTemplate());
 
 
-// контейнер фильмов верхний
+// HTML разметка созданная из случайных фильмов
 const taskListElement = siteMainElement.querySelector(`.films-list__container`);
-new Array(TASK_COUNT).fill(``).forEach(() => render(taskListElement, createFilmCardTaskTemplate()));
+const createRandomFilmsMarkup = (count) => {
+  return new Array(count)
+    .fill(``)
+    .map(() => {
+      const film = createRandomFilm();
+      return createFilmCardTemplate(film);
+    })
+    .join(``);
+};
+render(taskListElement, createRandomFilmsMarkup(TASK_COUNT));
 
 
 // блоки экстра фильмы
 const extraListElements = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
 for (let i = 0; i < extraListElements.length; i++) {
-  new Array(2).fill(``).forEach(() => render(extraListElements[i], createFilmCardTaskTemplate()));
+  render(extraListElements[i], createRandomFilmsMarkup(2));
 }
 
 
-// кнопка LoadMore
+// кнопка LoadMore & ф-ция добавить ещё карточек и удалить кнопку
 const boardElement = siteMainElement.querySelector(`.films-list`);
-render(boardElement, createShowMoreTemplate());
+render(boardElement, createBtnShowMoreTemplate());
+const btnLoad = siteMainElement.querySelector(`.films-list__show-more`);
+
+btnLoad.onclick = () => {
+  render(taskListElement, createRandomFilmsMarkup(5));
+  let taskFilmCard = siteMainElement.querySelectorAll(`.films-list .film-card`);
+  if (taskFilmCard.length >= 20) {
+    btnLoad.style.display = `none`;
+  }
+};
 
 
-// поп-арт - закоментировал тут и pop-art.js, что бы не закрывал проект
+// поп-арт - закоментировал что бы не закрывал проект
 // const siteBodyElement = document.querySelector(`body`);
 // const popElement = siteBodyElement.querySelector(`footer`);
-// render(popElement, createFilmDetailsTaskTemplate(), `afterEnd`);
+
+
+// const pop = createRandomFilm();
+// render(popElement, createPopArtFilmlsTaskTemplate(pop));
+
+
+// комментарии
+// const pop = document.querySelector('.film-details__comments-list');
+// render(pop, commentTemplate());
+
+
+// ******************* сортировка ************************************
+/*
+  Я не помню, как это было реализовано здесь. Но если бы я делал, я бы хранил состояние фильтра в переменной и вызывал сортировку при открытии карточек.
+  А при смене фильтра, менял значение этой переменной и тоже вызывал сортировку
+*/
+
+let filmsListContainer = document.querySelector(`.films-list__container`);
+let filmCard = document.querySelectorAll(`.films-list .film-card`);
+// let btnSortDefault = document.querySelector(`.sort__button-default`);
+// let btnSortDate = document.querySelector(`.sort__button-date`);
+let btnSortRating = document.querySelector(`.sort__button-rating`);
+
+btnSortRating.addEventListener(`click`, () => {
+  getSort(filmCard, `data-rating`, filmsListContainer);
+});
+
+
+// btnOpen.addEventListener(`click`, () =>  box.classList.toggle(`hidden`))
