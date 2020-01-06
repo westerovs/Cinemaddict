@@ -1,9 +1,7 @@
-// ********************************************************
+// import {randomItem, randomNumber} from '../mock/task.js';
+
 // ********************************************************
 // ********************** МОКИ ****************************
-// У тебя в объекте фильтра должно быть так
-// filtr = { name: '#tag, active: true(или false), count: число или пусто '};
-// И в функции ты проверяешь поля и на их основе выдаешь разметку
 
 // const navItemsName = [
 //   `Watchlist`,
@@ -11,44 +9,30 @@
 //   `Favorites`,
 // ];
 
-// const generateNavItems = function () {
-//   return navItemsName.map(function (item) {
-//     return {
-//       // название навигации
-//       nameNav: item,
-//       // счётчик
-//       countNav: Math.floor(Math.random() * 10)
-//     };
-//   });
-// };
 
 
-// ********************************************************
-// ********************************************************
-// ********** создать разметку навигаций ******************
 
-// const createNavigationMarkup = function (oneNavigation) {
-//   // oneNavigation принимает имена из моков
-//   const {nameNav, countNav} = oneNavigation;
-//   return (
-//     `<a href="#watchlist" class="main-navigation__item">
-//       ${nameNav}
-//       <span class="main-navigation__item-count">${countNav}</span>
-//     </a>`
-//   );
-// };
-
+// эта ф-ция получает элемент, определяет его родителей и вставляет перед ним нужные мне значения
+function insertAfter(elem, refElem) {
+  return refElem.parentNode.insertBefore(elem, refElem.nextSibling);
+}
 
 // ********************************************************
 // ********************************************************
 // ******************** Навигация *************************
 
 export const createNavigationTemplate = function () {
-  // const navMarkup = navigationsCreate.map((item, i) => createNavigationMarkup(item, i === 0)).join(` `);
+
   return (
     `<nav class="main-navigation">
       <a href="#all" class="main-navigation__item main-navigation__item--active">
         All movies
+      </a>
+      <a href="#watchlist" class="main-navigation__item" id="sort-up">
+        По возрастанию
+      </a>
+      <a href="#watchlist" class="main-navigation__item" id="sort-down">
+        По убыванию
       </a>
       <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">999</span></a>
       <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">999</span></a>
