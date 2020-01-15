@@ -4,15 +4,17 @@ import {createSortTemplate} from './components/sort.js';
 import {createFilmsListTemplate} from './components/film-list.js';
 import {createFilmCardTemplate} from './components/film-card-task.js';
 import {createBtnShowMoreTemplate} from './components/btn-show-more.js';
-
 import {createRandomFilm} from './mock/task.js';
 
-import {getSort} from './mock/function-sort.js';
 // import {generateNavItems} from './mock/navigation-mock.js';
 // поп-арт закоментировал, что бы не закрывал страницу
 // import {createPopArtFilmlsTaskTemplate} from './components/pop-art.js';
 // import {commentTemplate} from './mock/commit.js';
 
+// *******************************
+// import {createElement} from '../utils.js';
+// import SortComponent from './components/site-menu.js';
+// *******************************
 
 const TASK_COUNT = 5;
 
@@ -91,7 +93,7 @@ btnLoad.onclick = () => {
   Я не помню, как это было реализовано здесь. Но если бы я делал, я бы хранил состояние фильтра в переменной и вызывал сортировку при открытии карточек.
   А при смене фильтра, менял значение этой переменной и тоже вызывал сортировку
 */
-
+/*
 let filmsListContainer = document.querySelector(`.films-list__container`);
 let filmCard = document.querySelectorAll(`.films-list .film-card`);
 // let btnSortDefault = document.querySelector(`.sort__button-default`);
@@ -101,6 +103,6 @@ let btnSortRating = document.querySelector(`.sort__button-rating`);
 btnSortRating.addEventListener(`click`, () => {
   getSort(filmCard, `data-rating`, filmsListContainer);
 });
-
+*/
 
 // btnOpen.addEventListener(`click`, () =>  box.classList.toggle(`hidden`))
