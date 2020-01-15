@@ -10,12 +10,10 @@
 // ];
 
 
-
-
 // эта ф-ция получает элемент, определяет его родителей и вставляет перед ним нужные мне значения
-function insertAfter(elem, refElem) {
-  return refElem.parentNode.insertBefore(elem, refElem.nextSibling);
-}
+// function insertAfter(elem, refElem) {
+//   return refElem.parentNode.insertBefore(elem, refElem.nextSibling);
+// }
 
 // ********************************************************
 // ********************************************************
