@@ -1,6 +1,6 @@
-import SmartComponent from "./smart-component";
+import Component from "./component";
 
-export default class Filter extends SmartComponent {
+export default class Filter extends Component {
   constructor(filters) {
     super();
     this._filters = filters;
@@ -19,14 +19,4 @@ export default class Filter extends SmartComponent {
     <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
   </nav>`;
   }
-
-  set filters(newFilters) {
-    this._filters = newFilters;
-  }
-
-  recoverListeners() {
-    this._subscribeOnEvents();
-  }
-
-  _subscribeOnEvents() {}
 }

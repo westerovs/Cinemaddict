@@ -1,3 +1,5 @@
+import FilmController from "../controllers/FilmController";
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
@@ -14,6 +16,14 @@ export const render = (container, component, place = RenderPosition.BEFOREEND) =
 
 export const remove = (component) => {
   component.getElement().remove();
+  component.removeElement();
+};
+
+export const renderFilms = (filmList, section, onDataChange) => {
+  for (const film of filmList) {
+    const movie = new FilmController(section, onDataChange);
+    movie.render(film);
+  }
 };
 
 export const replace = (newComponent, oldComponent) => {
