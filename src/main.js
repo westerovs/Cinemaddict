@@ -33,5 +33,6 @@ menuComponent.onMenuItemClick((evt) => {
   }
 });
 
+
 const page = new PageController(mainContainer, moviesModel);
 page.render();
