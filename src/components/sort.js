@@ -9,6 +9,7 @@ export const createSortTemplate = () => (
   </ul>`
 );
 
+
 // класс который экспортируется из этого компонента по умолчанию
 export default class Sort {
   constructor() {
@@ -23,10 +24,10 @@ export default class Sort {
   }
 
   getElement() {
-    // далее мы эту строку(getTemplate) передаём createElement`У
     // проверка: cуществует ли у этого инстанса(экземпляра) элемент
     // если у this._element будет null, то мы сюда провалимся и запишем в this._element
     // функцию createElement с результатом getTemplate
+    // далее мы эту строку(getTemplate) передаём createElement`У
     if (!this._element) {
       // тут хранится dom узел из createElement
       this._element = createElement(this.getTemplate());

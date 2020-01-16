@@ -1,5 +1,5 @@
 // import {randomItem, randomNumber} from '../mock/task.js';
-
+import {createElement} from '../utils.js';
 // ********************************************************
 // ********************** МОКИ ****************************
 
@@ -19,8 +19,7 @@
 // ********************************************************
 // ******************** Навигация *************************
 
-export const createNavigationTemplate = function () {
-
+const createNavigationTemplate = function () {
   return (
     `<nav class="main-navigation">
       <a href="#all" class="main-navigation__item main-navigation__item--active">
@@ -41,16 +40,25 @@ export const createNavigationTemplate = function () {
 };
 
 
-/*
-  <a href="#watchlist" class="main-navigation__item">Watchlist <span class="main-navigation__item-count">999</span></a>
-  <a href="#history" class="main-navigation__item">History <span class="main-navigation__item-count">999</span></a>
-  <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">999</span></a>
-  <a href="#stats" class="main-navigation__item main-navigation__item--additional">Stats</a>
-*/
+// класс который экспортируется из этого компонента по умолчанию
+export default class Navigation {
+  constructor() {
+    this._element = null;
+  }
 
+  getTemplate() {
+    return createNavigationTemplate();
+  }
 
-// деструктурирующее присваивание
-// записывает firstName=arr[0], surname=arr[1]
-// let arr = ["Ilya", "Kantor"];
-// let [firstName, surname] = arr;
-// alert(arr);
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

@@ -1,4 +1,6 @@
-// ******************** шаблон фильма *********************
+import {createElement} from '../utils.js';
+
+// // ******************** шаблон фильма *********************
 export const createFilmCardTemplate = function (film) {
   // createRandomFilmMarkup - вызывает объект задач из createRandomFilm
   const {poster, name, rating, year, time, genre, description, comments, watched, favorite, watchlist} = film;
@@ -26,3 +28,26 @@ export const createFilmCardTemplate = function (film) {
   );
 };
 
+
+// класс который экспортируется из этого компонента по умолчанию
+export default class FilmCard {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmCardTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
