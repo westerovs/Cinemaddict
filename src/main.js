@@ -1,74 +1,176 @@
-import {createProfileTemplate} from './components/profile.js';
-import {createNavigationTemplate} from './components/navigation.js';
-import {createSortTemplate} from './components/sort.js';
-import {createFilmsListTemplate} from './components/film-list.js';
-import {createFilmCardTemplate} from './components/film-card-task.js';
-import {createBtnShowMoreTemplate} from './components/btn-show-more.js';
-import {createRandomFilm} from './mock/task.js';
-
-// import {generateNavItems} from './mock/navigation-mock.js';
 // поп-арт закоментировал, что бы не закрывал страницу
 // import {createPopArtFilmlsTaskTemplate} from './components/pop-art.js';
 // import {commentTemplate} from './mock/commit.js';
 
-// *******************************
-// import {createElement} from '../utils.js';
-// import SortComponent from './components/site-menu.js';
-// *******************************
+// ******** компоненты ***********
+import ProfileComponent from './components/profile.js';
+import NavigationComponent from './components/navigation.js';
+import SortComponent from './components/sort.js';
+import FilmsListComponent from './components/film-list.js';
+import FilmCardTaskComponent from './components/film-card.js';
+import BtnShowMoreComponent from './components/btn-show-more.js';
 
-const TASK_COUNT = 5;
-
-
-// ----------------------- ф-ция рендер -------------------
-const render = (container, template, place = `beforeend`) => {
-  if (container instanceof Element) {
-    container.insertAdjacentHTML(place, template);
-  }
-};
+import {createRandomFilm} from './mock/generate-task.js';
+import {render, RenderPosition} from './utils.js';
 
 
-// ----------------------- containers -----------------------
+const CARD_COUNT = 5;
+
+
+// ----------------------- containers --------------------------
 const siteHeaderElement = document.querySelector(`.header`);
 const siteMainElement = document.querySelector(`.main`);
 
 
 // ----------------------- рендер на страницу -------------------
-render(siteHeaderElement, createProfileTemplate());
-render(siteMainElement, createNavigationTemplate());
-render(siteMainElement, createSortTemplate());
-render(siteMainElement, createFilmsListTemplate());
+render(siteHeaderElement, new ProfileComponent().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new NavigationComponent().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+render(siteMainElement, new FilmsListComponent().getElement(), RenderPosition.BEFOREEND);
 
 
-// HTML разметка созданная из случайных фильмов
 const taskListElement = siteMainElement.querySelector(`.films-list__container`);
+const extraListElements = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
+// список фильмов
 const createRandomFilmsMarkup = (count) => {
   return new Array(count)
     .fill(``)
     .map(() => {
-      const film = createRandomFilm();
-      return createFilmCardTemplate(film);
+      let film = createRandomFilm();
+      return render(taskListElement, new FilmCardTaskComponent(film).getElement(), RenderPosition.BEFOREEND);
     })
     .join(``);
 };
-render(taskListElement, createRandomFilmsMarkup(TASK_COUNT));
+render(taskListElement, createRandomFilmsMarkup(CARD_COUNT));
 
-
-// блоки экстра фильмы
-const extraListElements = siteMainElement.querySelectorAll(`.films-list--extra .films-list__container`);
-for (let i = 0; i < extraListElements.length; i++) {
-  render(extraListElements[i], createRandomFilmsMarkup(2));
+// экстра фильмы
+for (let item of extraListElements) {
+  const createTopRandomFilmsMarkup = (count) => {
+    return new Array(count)
+      .fill(``)
+      .map(() => {
+        let film = createRandomFilm();
+        return render(item, new FilmCardTaskComponent(film).getElement(), RenderPosition.BEFOREEND);
+      })
+      .join(``);
+  };
+  render(item, createTopRandomFilmsMarkup(2));
 }
 
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+
+// // кнопка LoadMore & ф-ция добавить ещё карточек и удалить кнопку
+// const boardElement = siteMainElement.querySelector(`.films-list`);
+// render(boardElement, new BtnShowMoreComponent().getElement(), RenderPosition.BEFOREEND);
+// // const btnLoad = siteMainElement.querySelector(`.films-list__show-more`);
+
+
+// /* Сохраняет количество показываемых карточек */
+// let showingCardsCount = CARDS_SHOWING_ON_START;
+// const CARDS_SHOWING_BY_BUTTON = 5;
+
+// /* Добавляет показ оставшихся карточек и удаляет кнопку Show more, если показаны все карточки */
+// const onShowMoreButtonClick = () => {
+//   const prevCardsCount = showingCardsCount;
+//   showingCardsCount += CARDS_SHOWING_BY_BUTTON;
+
+//   for (const card of cards.slice(prevCardsCount, showingCardsCount)) {
+//     renderCard(basicFilmsListElement, card);
+//   }
+
+//   if (showingCardsCount >= allFilmsQuantity) {
+//     showMoreButtonComponent.getElement().remove();
+//     showMoreButtonComponent.removeElement();
+//     document.removeEventListener(`click`, onShowMoreButtonClick);
+//   }
+// };
+
+// showMoreButtonComponent.getElement().addEventListener(`click`, onShowMoreButtonClick);
+
+
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
+// /
 
 // кнопка LoadMore & ф-ция добавить ещё карточек и удалить кнопку
 const boardElement = siteMainElement.querySelector(`.films-list`);
-render(boardElement, createBtnShowMoreTemplate());
+render(boardElement, new BtnShowMoreComponent().getElement(), RenderPosition.BEFOREEND);
 const btnLoad = siteMainElement.querySelector(`.films-list__show-more`);
 
 btnLoad.onclick = () => {
-  render(taskListElement, createRandomFilmsMarkup(5));
+  render(taskListElement, createRandomFilmsMarkup(CARD_COUNT));
   let taskFilmCard = siteMainElement.querySelectorAll(`.films-list .film-card`);
-  if (taskFilmCard.length >= 20) {
+  if (taskFilmCard.length >= 10) {
     btnLoad.style.display = `none`;
   }
 };
