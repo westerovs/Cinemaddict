@@ -58,6 +58,10 @@ export default class Movies {
     return false;
   }
 
+  setComments(movieId, comments) {
+    this._filmList.find((film) => film.id === movieId).comments = comments;
+  }
+
   setFilter(filterType) {
     this._activeFilterType = filterType;
     this._filterChangeHandlers.forEach((handler) => handler());

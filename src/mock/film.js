@@ -61,7 +61,7 @@ const createRandomDate = () => {
   return randomDate;
 };
 
-const createComments = (amount) => {
+export const createComments = (amount) => {
   const comments = [];
 
   for (let i = 0; i < amount; i++) {

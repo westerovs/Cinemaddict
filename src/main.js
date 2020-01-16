@@ -1,19 +1,17 @@
 import ProfileRatingComponent from "./components/profile-rating";
-import {createRandomFilms} from "./mock/film";
 import {checkForActiveState, getRandomNumber} from "./utils/helpers";
 import {render} from "./utils/render";
 import PageController from "./controllers/page";
 import MoviesModel from "./models/movies";
 import MenuController from "./controllers/menu";
+import API from "./api";
 
-const filmList = createRandomFilms(12);
 const mainContainer = document.querySelector(`.main`);
 const headerContainer = document.querySelector(`.header`);
 
 render(headerContainer, new ProfileRatingComponent(getRandomNumber(0, 30)));
 
 const moviesModel = new MoviesModel();
-moviesModel.filmList = filmList;
 
 const menuController = new MenuController(mainContainer, moviesModel);
 menuController.render();
@@ -33,5 +31,12 @@ menuComponent.onMenuItemClick((evt) => {
   }
 });
 
+const api = new API();
 const page = new PageController(mainContainer, moviesModel);
-page.render();
+
+api.getMovies()
+  .then((data) => {
+    moviesModel.filmList = data;
+    menuController.updateComponent();
+    page.render();
+  });

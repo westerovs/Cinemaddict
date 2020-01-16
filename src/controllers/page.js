@@ -8,6 +8,8 @@ import {Films} from "../utils/const";
 import FilmController from "./film";
 import {getFilmsToLoadAmount} from "../utils/helpers";
 import StatisticComponent from "../components/statistic";
+import API from "../api";
+import Movie from "../models/movie";
 
 export default class PageController {
   constructor(container, moviesModel) {
@@ -21,11 +23,12 @@ export default class PageController {
     this._noDataComponent = new NoDataComponent();
     this._filmSectionComponent = new FilmSectionComponent();
     this._showMoreButtonComponent = new ShowMoreButtonComponent();
-    this._statisticComponent = new StatisticComponent(this._moviesModel);
+    this._statisticComponent = null;
 
     this._filmControllers = [];
     this._extraFilmControllers = [];
     this._moviesModel.onFilterChange(this._onFilterChange);
+    this._api = new API();
     this._renderedFilmsAmount = 0;
   }
 
@@ -43,7 +46,7 @@ export default class PageController {
 
   renderFilms(filmList, section, countFilms = true) {
     for (const film of filmList) {
-      const filmController = new FilmController(section, this._onDataChange);
+      const filmController = new FilmController(section, this._moviesModel, this._onDataChange);
 
       if (section.className === `films`) {
         this._filmControllers.push(filmController);
@@ -71,8 +74,9 @@ export default class PageController {
 
     render(this._container, this._sortComponent);
     render(this._container, this._filmSectionComponent);
-    render(this._container, this._statisticComponent);
 
+    this._statisticComponent = new StatisticComponent(this._moviesModel);
+    render(this._container, this._statisticComponent);
     this._statisticComponent.hide();
 
     this._sortComponent.onSortTypeChange((sortType) => {
@@ -102,9 +106,9 @@ export default class PageController {
 
   _renderMostCommented(filmList) {
     const mostCommentedFilms = filmList.slice()
-      .sort((a, b) => b.comments.length - a.comments.length).slice(0, Films.EXTRA_FILM_AMOUNT);
+      .sort((a, b) => b.commentIds.length - a.commentIds.length).slice(0, Films.EXTRA_FILM_AMOUNT);
 
-    if (mostCommentedFilms.some((film) => film.comments.length !== 0)) {
+    if (mostCommentedFilms.some((film) => film.commentIds.length !== 0)) {
       const extraSection = new ExtraSectionComponent(`Most Commented`);
       render(this._filmSectionComponent.getElement(), extraSection);
       this.renderFilms(mostCommentedFilms, extraSection.getElement(), false);
@@ -148,10 +152,17 @@ export default class PageController {
   }
 
   _onDataChange(filmController, oldData, newData) {
-    this._moviesModel.onDataChange(() => {
-      filmController.updateComponents(newData);
-    });
-    this._moviesModel.updateFilm(newData.id, newData);
+    const comments = newData.comments;
+
+    this._api.updateMovie(newData.id, newData)
+      .then((response) => Movie.parseMovie(response))
+      .then((data) => {
+        data.comments = comments;
+        this._moviesModel.onDataChange(() => {
+          filmController.updateComponents(data);
+        });
+        this._moviesModel.updateFilm(data.id, data);
+      });
   }
 
   _onFilterChange() {

@@ -30,9 +30,9 @@ export default class FilmCard extends SmartComponent {
       <span class="film-card__duration">${duration}</span>
       <span class="film-card__genre">${film.genres}</span>
     </p>
-    <img src="./images/posters/${film.poster}" alt="" class="film-card__poster">
+    <img src="./${film.poster}" alt="" class="film-card__poster">
     <p class="film-card__description">${description}</p>
-    <a class="film-card__comments">${film.comments.length} comments</a>
+    <a class="film-card__comments">${film.commentIds.length} comments</a>
     ${this.getCardControlsTemplate()}
   </article>`;
   }
@@ -41,7 +41,7 @@ export default class FilmCard extends SmartComponent {
   // чтобы не вызывать при вызове rerender() эту анимацию
   rerender() {
     this.getElement().querySelector(`.film-card__controls`).innerHTML = this.getCardControlsTemplate();
-    this.getElement().querySelector(`.film-card__comments`).textContent = `${this._film.comments.length} comments`;
+    this.getElement().querySelector(`.film-card__comments`).textContent = `${this._film.commentIds.length} comments`;
 
     this.recoverListeners();
   }
