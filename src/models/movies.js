@@ -24,6 +24,10 @@ export default class Movies {
     return this._activeSortType;
   }
 
+  get filterType() {
+    return this._activeFilterType;
+  }
+
   set sortType(type) {
     this._activeSortType = type;
   }
@@ -56,6 +60,10 @@ export default class Movies {
     }
 
     return false;
+  }
+
+  setComments(movieId, comments) {
+    this._filmList.find((film) => film.id === movieId).comments = comments;
   }
 
   setFilter(filterType) {

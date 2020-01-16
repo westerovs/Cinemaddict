@@ -24,9 +24,13 @@ export default class MenuController {
     render(this._container, this._menuComponent, RenderPosition.AFTERBEGIN);
   }
 
-  _onDataChange() {
+  updateComponent() {
     this._filters = generateFilters(this._moviesModel.filmListDefault);
     this._menuComponent.filters = this._filters;
     this._menuComponent.rerender();
+  }
+
+  _onDataChange() {
+    this.updateComponent();
   }
 }
