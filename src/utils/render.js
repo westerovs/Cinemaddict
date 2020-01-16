@@ -15,11 +15,3 @@ export const render = (container, component, place = RenderPosition.BEFOREEND) =
 export const remove = (component) => {
   component.getElement().remove();
 };
-
-export const replace = (newComponent, oldComponent) => {
-  const parent = oldComponent.getElement().parentNode;
-
-  if (parent.contains(oldComponent.getElement())) {
-    parent.replaceChild(newComponent.getElement(), oldComponent.getElement());
-  }
-};

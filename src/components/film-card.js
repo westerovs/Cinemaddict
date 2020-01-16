@@ -18,21 +18,19 @@ export default class FilmCard extends SmartComponent {
   }
 
   getTemplate() {
-    const film = this._film;
-    const duration = formatTime(film.duration);
-    const description = film.description.length > 139 ? film.description.substring(0, 139) + `...` : film.description;
+    const description = this._film.description.length > 139 ? this._film.description.substring(0, 139) + `...` : this._film.description;
 
     return `<article class="film-card">
-    <h3 class="film-card__title">${film.title}</h3>
-    <p class="film-card__rating">${film.rating}</p>
+    <h3 class="film-card__title">${this._film.title}</h3>
+    <p class="film-card__rating">${this._film.rating}</p>
     <p class="film-card__info">
-      <span class="film-card__year">${film.year}</span>
-      <span class="film-card__duration">${duration}</span>
-      <span class="film-card__genre">${film.genres}</span>
+      <span class="film-card__year">${this._film.year}</span>
+      <span class="film-card__duration">${formatTime(this._film.duration)}</span>
+      <span class="film-card__genre">${this._film.genres}</span>
     </p>
-    <img src="./images/posters/${film.poster}" alt="" class="film-card__poster">
+    <img src="./${this._film.poster}" alt="" class="film-card__poster">
     <p class="film-card__description">${description}</p>
-    <a class="film-card__comments">${film.comments.length} comments</a>
+    <a class="film-card__comments">${this._film.commentIds.length} comments</a>
     ${this.getCardControlsTemplate()}
   </article>`;
   }
@@ -41,7 +39,7 @@ export default class FilmCard extends SmartComponent {
   // чтобы не вызывать при вызове rerender() эту анимацию
   rerender() {
     this.getElement().querySelector(`.film-card__controls`).innerHTML = this.getCardControlsTemplate();
-    this.getElement().querySelector(`.film-card__comments`).textContent = `${this._film.comments.length} comments`;
+    this.getElement().querySelector(`.film-card__comments`).textContent = `${this._film.commentIds.length} comments`;
 
     this.recoverListeners();
   }

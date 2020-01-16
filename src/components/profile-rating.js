@@ -8,14 +8,13 @@ export default class ProfileRating extends Component {
   }
 
   getUserRating() {
-    let userRating;
+    let userRating = ``;
 
-    for (const rate of userRatings) {
-      if (this._moviesWatched >= rate.min && this._moviesWatched <= rate.max) {
-        userRating = rate.title;
-        break;
+    userRatings.forEach((rating) => {
+      if (this._moviesWatched >= rating.min && this._moviesWatched <= rating.max) {
+        userRating = rating.title;
       }
-    }
+    });
 
     return userRating;
   }

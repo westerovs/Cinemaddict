@@ -1,4 +1,5 @@
 import {Films} from "./const";
+import moment from "moment";
 
 export const checkForActiveState = (target) => {
   const isActive = target.classList.contains(`main-navigation__item--active`);

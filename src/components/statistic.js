@@ -37,9 +37,10 @@ export default class Statistic extends Component {
     const filmList = this._moviesModel.filmListDefault;
     const ctx = this.getElement().querySelector(`.statistic__chart`);
     const genresData = this._getGenresData(filmList);
+    const sortedGenresData = new Map([...genresData].sort((a, b) => b[1] - a[1]));
 
-    const genresLabels = [...genresData.keys()];
-    const genresValues = [...genresData.values()];
+    const genresLabels = [...sortedGenresData.keys()];
+    const genresValues = [...sortedGenresData.values()];
 
     ctx.height = BAR_HEIGHT * genresLabels.length;
 
