@@ -66,6 +66,7 @@ const createComments = (amount) => {
 
   for (let i = 0; i < amount; i++) {
     comments.push({
+      id: i + 1,
       emoji: getRandomArrayItem(emojis),
       text: getRandomArrayItem(commentTexts),
       author: getRandomArrayItem(commentAuthors),
@@ -80,6 +81,7 @@ const createRandomFilms = (filmAmount) => {
   const filmList = [];
   for (let i = 0; i < filmAmount; i++) {
     filmList.push({
+      id: i + 1,
       title: getRandomArrayItem(filmTitles),
       poster: getRandomArrayItem(filmPosters),
       director: `John Stone`,
