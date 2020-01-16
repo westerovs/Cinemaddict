@@ -1,3 +1,5 @@
+import {Films} from "./const";
+
 export const getRandomNumber = (min, max) => Math.floor(Math.random() * ((max + 1) - min) + min);
 
 export const getRandomArrayItem = (array) => array[getRandomNumber(0, array.length - 1)];
@@ -45,4 +47,22 @@ export const createElement = (template) => {
 
 export const isEscPressed = (evt) => {
   return evt.key === `Escape` || evt.key === `Esc`;
+};
+
+export const isSubmitPressed = (evt) => {
+  return evt.ctrlKey && (evt.key === `Enter` || evt.key === `Ent`);
+};
+
+export const getFilmsToLoadAmount = (renderedAmount) => {
+  if (renderedAmount) {
+    let result = renderedAmount;
+
+    for (let i = 0; i < result % Films.INITIAL_AMOUNT; i++) {
+      result++;
+    }
+
+    return result;
+  }
+
+  return Films.INITIAL_AMOUNT;
 };

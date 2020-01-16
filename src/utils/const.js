@@ -22,3 +22,10 @@ export const userRatings = [
     max: 30
   }
 ];
+
+export const FilterTypes = {
+  DEFAULT: `all`,
+  WATCHLIST: `watchlist`,
+  HISTORY: `history`,
+  FAVORITES: `favorites`
+};
