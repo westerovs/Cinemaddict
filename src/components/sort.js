@@ -1,44 +1,37 @@
-import {createElement} from '../utils.js';
+import Component from "./component";
 
-// Cортировка
-export const createSortTemplate = () => (
-  `<ul class="sort">
-    <li><a href="#" class="sort__button sort__button-default sort__button--active">Sort by default</a></li>
-    <li><a href="#" class="sort__button sort__button-date">Sort by date</a></li>
-    <li><a href="#" class="sort__button sort__button-rating">Sort by rating</a></li>
-  </ul>`
-);
+export const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `rating`
+};
 
-
-// класс который экспортируется из этого компонента по умолчанию
-export default class Sort {
+export default class Sort extends Component {
   constructor() {
-    // нужно указать поле элемент в котором будет храниться DOM узел
-    // null т.к на момент создания экземпляра нет никаких DOM узлов
-    this._element = null;
+    super();
+    this._currenSortType = SortType.DEFAULT;
   }
 
-  // метод getTemplate возвращает разметку(в виде строки)
   getTemplate() {
-    return createSortTemplate();
+    return `<ul class="sort">
+    <li><a href="#" data-sort-type="${SortType.DEFAULT}" class="sort__button sort__button--active">Sort by default</a></li>
+    <li><a href="#" data-sort-type="${SortType.DATE}" class="sort__button">Sort by date</a></li>
+    <li><a href="#" data-sort-type="${SortType.RATING}" class="sort__button">Sort by rating</a></li>
+  </ul>`;
   }
 
-  getElement() {
-    // проверка: cуществует ли у этого инстанса(экземпляра) элемент
-    // если у this._element будет null, то мы сюда провалимся и запишем в this._element
-    // функцию createElement с результатом getTemplate
-    // далее мы эту строку(getTemplate) передаём createElement`У
-    if (!this._element) {
-      // тут хранится dom узел из createElement
-      this._element = createElement(this.getTemplate());
-    }
-    // возвращает dom узел
-    return this._element;
-  }
+  setSortTypeChangeHandler(handler) {
+    this.getElement().addEventListener(`click`, (evt) => {
+      evt.preventDefault();
 
-  removeElement() {
-    this._element = null;
+      if (!evt.target.classList.contains(`sort__button--active`)) {
+        this.getElement().querySelector(`.sort__button--active`).classList.remove(`sort__button--active`);
+        evt.target.classList.add(`sort__button--active`);
+
+        this._currenSortType = evt.target.dataset.sortType;
+
+        handler(this._currenSortType);
+      }
+    });
   }
 }
-
-
