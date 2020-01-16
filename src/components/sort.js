@@ -20,7 +20,7 @@ export default class Sort extends Component {
   </ul>`;
   }
 
-  setSortTypeChangeHandler(handler) {
+  onSortTypeChange(handler) {
     this.getElement().addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
