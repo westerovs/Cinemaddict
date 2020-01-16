@@ -1,7 +1,7 @@
 import {formatTime} from "../utils/helpers";
-import Component from "./component";
+import SmartComponent from "./smart-component";
 
-export default class FilmCard extends Component {
+export default class FilmCard extends SmartComponent {
   constructor(film) {
     super();
     this._film = film;
@@ -23,14 +23,47 @@ export default class FilmCard extends Component {
     <p class="film-card__description">${film.description}</p>
     <a class="film-card__comments">${film.comments.length} comments</a>
     <form class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-      <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${film.isInWatchlist ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
+      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${film.isWatched ? `film-card__controls-item--active` : ``}">Mark as watched</button>
+      <button class="film-card__controls-item button film-card__controls-item--favorite ${film.isFavorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
     </form>
   </article>`;
   }
 
-  setClickHandler(handler) {
+  set film(newFilm) {
+    this._film = newFilm;
+  }
+
+  onFilmClick(handler) {
+    this._onFilmClick = handler;
     this.getElement().addEventListener(`click`, handler);
+  }
+
+  onAddToWatchlistClick(handler) {
+    this._onAddToWatchlistClick = handler;
+    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
+  }
+
+  onMarkAsWatchedClick(handler) {
+    this._onMarkAsWatchedClick = handler;
+    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
+  }
+
+  onFavoriteClick(handler) {
+    this._onFavoriteClick = handler;
+    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
+  }
+
+  recoverListeners() {
+    this._subscribeOnEvents();
+  }
+
+  _subscribeOnEvents() {
+    const element = this.getElement();
+
+    element.addEventListener(`click`, this._onFilmClick);
+    element.querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._onAddToWatchlistClick);
+    element.querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, this._onMarkAsWatchedClick);
+    element.querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, this._onFavoriteClick);
   }
 }

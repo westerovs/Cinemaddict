@@ -92,6 +92,7 @@ const createRandomFilms = (filmAmount) => {
       year: getRandomNumber(MIN_YEAR, MAX_YEAR),
       duration: getRandomNumber(50, 150),
       genres: [`Horror`, `Comedy`, `Romance`],
+      isInWatchlist: getRandomBoolean(),
       isWatched: getRandomBoolean(),
       isFavorite: getRandomBoolean(),
       comments: createComments(getRandomNumber(0, 40))

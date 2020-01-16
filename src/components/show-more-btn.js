@@ -5,7 +5,7 @@ export default class ShowMoreButton extends Component {
     return `<button class="films-list__show-more">Show more</button>`;
   }
 
-  setClickHandler(handler) {
+  onButtonClick(handler) {
     this.getElement().addEventListener(`click`, handler);
   }
 }

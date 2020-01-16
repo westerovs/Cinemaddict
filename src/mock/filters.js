@@ -2,7 +2,7 @@ export const generateFilters = (films) => {
   return [
     {
       title: `Watchlist`,
-      count: 0
+      count: films.filter((film) => film.isInWatchlist).length
     },
     {
       title: `History`,
