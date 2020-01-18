@@ -5,7 +5,7 @@ export const Films = {
   EXTRA_FILM_AMOUNT: 2
 };
 
-export const userRatings = [
+export const userRanks = [
   {
     title: `Novice`,
     min: 0,

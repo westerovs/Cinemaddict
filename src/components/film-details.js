@@ -1,6 +1,8 @@
-import {formatTime} from "../utils/helpers";
+import {formatTime, getCommentDate, getReleaseDate} from "../utils/helpers";
 import SmartComponent from "./smart-component";
 import {remove, render} from "../utils/render";
+import LoadingRingComponent from "./loading-ring";
+import moment from "moment";
 
 export default class FilmDetails extends SmartComponent {
   constructor(film) {
@@ -11,7 +13,7 @@ export default class FilmDetails extends SmartComponent {
 
   renderComments() {
     const sortedComments = this._film.comments.slice()
-      .sort((a, b) => a.date - b.date);
+      .sort((a, b) => moment(a.date) - moment(b.date));
 
     return sortedComments.map((comment) =>
       `<li class="film-details__comment" data-id="${comment.id}">
@@ -22,7 +24,7 @@ export default class FilmDetails extends SmartComponent {
           <p class="film-details__comment-text">${comment.comment}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.author}</span>
-            <span class="film-details__comment-day">${comment.date}</span>
+            <span class="film-details__comment-day">${getCommentDate(comment.date)}</span>
             <button class="film-details__comment-delete">Delete</button>
           </p>
         </div>
@@ -96,8 +98,12 @@ export default class FilmDetails extends SmartComponent {
   }
 
   getCommentsWrapTemplate() {
-    return `<section class="film-details__comments-wrap">
-          <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._film.comments.length}</span></h3>
+    const loadingRing = new LoadingRingComponent();
+    loadingRing.width = `100px`;
+    loadingRing.height = `100px`;
+
+    return !this._film.comments.length ? loadingRing.getElement().outerHTML :
+      `<h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${this._film.comments.length}</span></h3>
 
           <ul class="film-details__comments-list">
           ${this.renderComments()}
@@ -132,8 +138,7 @@ export default class FilmDetails extends SmartComponent {
                 <img src="./images/emoji/angry.png" width="30" height="30" alt="emoji">
               </label>
             </div>
-          </div>
-        </section>`;
+          </div>`;
   }
 
   getTemplate() {
@@ -179,7 +184,7 @@ export default class FilmDetails extends SmartComponent {
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Release Date</td>
-                <td class="film-details__cell">${this._film.date} ${this._film.year}</td>
+                <td class="film-details__cell">${getReleaseDate(this._film.date)}</td>
               </tr>
               <tr class="film-details__row">
                 <td class="film-details__term">Runtime</td>
@@ -206,7 +211,9 @@ export default class FilmDetails extends SmartComponent {
         ${this.getMiddleContainerTemplate()}
 
       <div class="form-details__bottom-container">
-        ${this.getCommentsWrapTemplate()}
+         <section class="film-details__comments-wrap">
+            ${this.getCommentsWrapTemplate()}
+         </section>
       </div>
     </form>
   </section>`;
@@ -235,7 +242,7 @@ export default class FilmDetails extends SmartComponent {
   rerender() {
     this.getElement().querySelector(`.film-details__controls`).outerHTML = this.getFilmControlsTemplate();
     this.getElement().querySelector(`.form-details__middle-container`).outerHTML = this.getMiddleContainerTemplate();
-    this.getElement().querySelector(`.film-details__comments-wrap`).outerHTML = this.getCommentsWrapTemplate();
+    this.getElement().querySelector(`.film-details__comments-wrap`).innerHTML = this.getCommentsWrapTemplate();
 
     this.recoverListeners();
   }
@@ -268,6 +275,12 @@ export default class FilmDetails extends SmartComponent {
     this.getElement().querySelector(`.film-details__user-rating-score`).addEventListener(`click`, handler);
   }
 
+  onUndoClick(handler) {
+    this._onUndoClick = handler;
+
+    this.getElement().querySelector(`.film-details__watched-reset`).addEventListener(`click`, handler);
+  }
+
   onKeydown(handler) {
     this._onKeydown = handler;
   }
@@ -283,6 +296,7 @@ export default class FilmDetails extends SmartComponent {
     element.querySelector(`.film-details__control-label--watched`).addEventListener(`click`, this._onMarkAsWatchedClick);
     element.querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, this._onFavoriteClick);
     element.querySelector(`.film-details__user-rating-score`).addEventListener(`click`, this._onRatingClick);
+    element.querySelector(`.film-details__watched-reset`).addEventListener(`click`, this._onUndoClick);
 
     element.querySelectorAll(`.film-details__comment-delete`)
       .forEach((it) => it.addEventListener(`click`, this._onCommentDeleteClick));

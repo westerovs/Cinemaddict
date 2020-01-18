@@ -8,12 +8,11 @@ import {Films, FilterTypes} from "../utils/const";
 import FilmController from "./film";
 import {getFilmsToLoadAmount} from "../utils/helpers";
 import StatisticComponent from "../components/statistic";
-import API from "../api";
 import Movie from "../models/movie";
 import Comment from "../models/comment";
 
 export default class PageController {
-  constructor(container, moviesModel) {
+  constructor(container, moviesModel, provider) {
     this._container = container;
     this._moviesModel = moviesModel;
 
@@ -29,7 +28,7 @@ export default class PageController {
     this._filmControllers = [];
     this._extraFilmControllers = [];
     this._moviesModel.onFilterChange(this._onFilterChange);
-    this._api = new API();
+    this._api = provider;
     this._renderedFilmsAmount = 0;
   }
 
@@ -47,7 +46,7 @@ export default class PageController {
 
   renderFilms(filmList, section, countFilms = true) {
     filmList.forEach((film) => {
-      const filmController = new FilmController(section, this._moviesModel, this._onDataChange, film.id);
+      const filmController = new FilmController(section, this._moviesModel, this._onDataChange, film.id, this._api);
 
       if (section.className === `films`) {
         this._filmControllers.push(filmController);
@@ -181,7 +180,7 @@ export default class PageController {
     }
 
     if (newData instanceof Comment && isDeleted) {
-      return this._api.deleteComment(newData.id)
+      return this._api.deleteComment(newData.id, oldData.id)
         .then(() => {
           const index = oldData.comments.findIndex((comment) => comment.id === newData.id);
           oldData.comments.splice(index, 1);
@@ -204,6 +203,8 @@ export default class PageController {
           }
         });
     }
+
+    return null;
   }
 
   _onRequestSuccess(data, controllers) {

@@ -1,4 +1,4 @@
-import {Films} from "./const";
+import {Films, userRanks} from "./const";
 import moment from "moment";
 
 export const checkForActiveState = (target) => {
@@ -26,36 +26,65 @@ export const getRandomArrayItem = (array) => array[getRandomNumber(0, array.leng
 
 export const getRandomBoolean = () => Math.random() > 0.5;
 
-export const formatTime = (time) => {
+export const formatTime = (time, forStats = false) => {
+  const spanWrap = (x) => `<span class="statistic__item-description">${x}</span>`;
   const hours = time / 60 ^ 0;
   const minutes = time % 60;
 
-  return `${hours}h ${minutes}m`;
+  return `${hours}${!forStats ? `h` : spanWrap(`h`)} ${minutes}${!forStats ? `m` : spanWrap(`m`)}`;
 };
 
-const formatDateNumber = (number) => number < 10 ? `0${number}` : number;
+export const getUserRank = (watchedAmount) => {
+  let userRank = ``;
 
-export const formatDate = (date) => {
-  const currentDate = new Date().getDate();
-  const day = formatDateNumber(date.getDate());
-  const hours = formatDateNumber(date.getHours());
-  const minutes = formatDateNumber(date.getMinutes());
+  userRanks.forEach((rank) => {
+    if (watchedAmount >= rank.min && watchedAmount <= rank.max) {
+      userRank = rank.title;
+    }
+  });
 
-  let result = `${date.getFullYear()}/${date.getMonth()}/${day} ${hours}:${minutes}`;
+  return userRank;
+};
+
+export const getYear = (date) => {
+  return moment(date).format(`YYYY`);
+};
+
+export const getCommentDate = (date) => {
+  let result = moment(date).format(`YYYY/MM/DD HH:mm`);
 
   switch (true) {
-    case date.getDate() === currentDate:
-      result = `Today`;
+    case moment(date).isBetween(moment().subtract(59, `seconds`), moment()):
+      result = `now`;
       break;
-    case (date.getDate() + 1) === currentDate:
-      result = `Yesterday`;
+    case moment(date).isBetween(moment().subtract(3, `minutes`), moment()):
+      result = `a minute ago`;
       break;
-    case (date.getDate() + 2) === currentDate:
-      result = `2 days ago`;
+    case moment(date).isBetween(moment().subtract(59, `minutes`), moment()):
+      result = `a few minutes ago`;
+      break;
+    case moment(date).isBetween(moment().subtract(2, `hours`), moment()):
+      result = `an hour ago`;
+      break;
+    case moment(date).isBetween(moment().subtract(24, `hours`), moment()):
+      result = `a few hours ago`;
+      break;
+    case moment(date).isBetween(moment().subtract(1, `days`), moment()):
+      result = `a day ago`;
+      break;
+    case moment(date).isBetween(moment().subtract(2, `days`), moment()):
+      result = `two days ago`;
+      break;
+    case moment(date).isBetween(moment().subtract(3, `days`), moment()):
+      result = `three days ago`;
       break;
   }
 
   return result;
+};
+
+export const getReleaseDate = (date) => {
+  return moment(date).format(`DD MMMM YYYY`);
 };
 
 export const createElement = (template) => {
@@ -85,4 +114,9 @@ export const getFilmsToLoadAmount = (renderedAmount) => {
   }
 
   return Films.INITIAL_AMOUNT;
+};
+
+export const setDocumentTitle = (title) => {
+  const currentTitle = document.title.indexOf(`[`) ? document.title.split(`[`)[0] : document.title;
+  document.title = `${currentTitle} ${title}`;
 };
