@@ -320,6 +320,7 @@ button {
 .film-card__rating {
   display: inline;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .film-card__title {
@@ -352,6 +353,7 @@ button {
   position: absolute;
   transition: bottom 0.2s ease-out;
   width: 100%;
+  cursor: pointer;
   z-index: 1;
 }
 
@@ -519,31 +521,6 @@ button {
   100% {
     transform: translateX(0);
   }
-}
-
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: translateX(-5px);
-  }
-
-  20%,
-  40%,
-  60%,
-  80% {
-    transform: translateX(5px);
-  }
-}
-.shake {
-  animation: shake 0.6s;
 }
 
 .details {
@@ -1100,33 +1077,4 @@ button {
   min-height: 300px;
   padding-top: 50px;
   padding-bottom: 50px;
-}
-.lds-dual-ring-wrap {
-  margin: 0 auto;
-  display: block;
-  text-align: center;
-}
-.lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px solid #fff;
-  border-color: #fff transparent #fff transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
