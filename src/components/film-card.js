@@ -1,4 +1,7 @@
 import {createElement} from '../utils.js';
+import {render, RenderPosition} from '../utils.js';
+import PopArtFilmlComponent from '../components/pop-art.js';
+import Comments from './comments.js';
 
 // // ******************** шаблон фильма *********************
 const createFilmCardTemplate = (film) => {
@@ -29,6 +32,8 @@ const createFilmCardTemplate = (film) => {
 
 export default class FilmCard {
   constructor(film) {
+    this._comments = new Comments(film.comments);
+    this._popUp = new PopArtFilmlComponent(film);
     this._film = film;
     this._element = null;
   }
@@ -38,8 +43,27 @@ export default class FilmCard {
   }
 
   getElement() {
+
     if (!this._element) {
       this._element = createElement(this.getTemplate());
+      // обложка фильмов
+      const poster = this._element.querySelector(`.film-card__poster`);
+      // заголовок фильмов
+      const filmTitle = this._element.querySelector(`.film-card__title`);
+      // комментарии фильмов
+      const comment = this._element.querySelector(`.film-card__comments`);
+
+      poster.onclick = () => {
+        this.showPopUp();
+      };
+
+      filmTitle.onclick = () => {
+        this.showPopUp();
+      };
+
+      comment.onclick = () => {
+        this.showPopUp();
+      };
     }
     return this._element;
   }
@@ -47,4 +71,12 @@ export default class FilmCard {
   removeElement() {
     this._element = null;
   }
+
+  showPopUp() {
+    const popUp = this._popUp.getElement();
+    render(document.body, popUp, RenderPosition.BEFOREEND);
+    const commentsContainer = popUp.querySelector(`.form-details__bottom-container`);
+    render(commentsContainer, this._comments.getElement(), RenderPosition.BEFOREEND);
+  }
 }
+

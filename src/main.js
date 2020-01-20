@@ -4,17 +4,22 @@ import ProfileComponent from './components/profile.js';
 import NavigationComponent from './components/navigation.js';
 import SortComponent from './components/sort.js';
 import FilmsListComponent from './components/film-list.js';
-import FilmCardTaskComponent from './components/film-card.js';
+import FilmCard from './components/film-card.js';
 import BtnShowMoreComponent from './components/btn-show-more.js';
-import PopArtFilmlComponent from './components/pop-art.js';
-import CommentsComponent from './components/comments.js';
+// import PopApFilmlComponent from './components/pop-art.js';
+// import CommentsComponent from './components/comments.js';
 
-import {createRandomFilm} from './mock/generate-task.js';
+import {createRandomFilms} from './mock/generate-film.js';
 import {render, RenderPosition} from './utils.js';
 
 // import {commentTemplate} from './mock/commit.js';
 
 const CARD_COUNT = 5;
+
+
+// -------------------------------------------------------------
+
+const films = createRandomFilms(CARD_COUNT);
 
 
 // -------------------------------------------------------------
@@ -37,34 +42,37 @@ const extraListElements = siteMainElement.querySelectorAll(`.films-list--extra .
 
 // -------------------------------------------------------------
 // -------------------- функция отрисовки фильмов --------------
-function createMarkingCards(element, Component, value = CARD_COUNT) {
-  let createRandomFilmsMarkup = (count) => {
-    return new Array(count)
-      .fill(``)
-      .map(() => {
-        let film = createRandomFilm();
-        return render(element, new Component(film).getElement(), RenderPosition.BEFOREEND);
-      })
-      .join(``);
-  };
-  render(element, createRandomFilmsMarkup(value));
+function renderFilms(element) {
+
+  const fragment = document.createDocumentFragment();
+  films.forEach((film) => {
+    fragment.appendChild(new FilmCard(film).getElement());
+  });
+
+  element.appendChild(fragment);
 }
 
+renderFilms(taskListElement);
 
-// -------------------------------------------------------------
-// ----------------------- верхний список фильмов --------------
-createMarkingCards(taskListElement, FilmCardTaskComponent);
+// // -------------------------------------------------------------
+// // ----------------------- верхний список фильмов --------------
+// createMarkingCards(taskListElement, FilmCardTaskComponent);
 
 
-// -------------------------------------------------------------
-// ----------------------- экстра фильмы -----------------------
-for (let item of extraListElements) {
-  createMarkingCards(item, FilmCardTaskComponent, 2);
-}
+// // -------------------------------------------------------------
+// // ----------------------- экстра фильмы -----------------------
+// for (let item of extraListElements) {
+//   createMarkingCards(item, FilmCardTaskComponent, 2);
+// }
 
 
 // -------------------------------------------------------------
 // кнопка LoadMore & ф-ция добавить ещё карточек и удалить кнопку
+
+/*
+ надо добавить в массив с фильмами и заново вызывать рендер
+*/
+
 const boardElement = siteMainElement.querySelector(`.films-list`);
 render(boardElement, new BtnShowMoreComponent().getElement(), RenderPosition.BEFOREEND);
 
@@ -82,55 +90,15 @@ btnShowMore.onclick = () => {
 
 // -------------------------------------------------------------
 // -------------------- поп-арт --------------------------------
-const bodyElement = document.querySelector(`body`);
-const footerElement = bodyElement.querySelector(`footer`);
 
+document.addEventListener(`keydown`, function (evt) {
+  if (evt.keyCode === 27) {
+    const popUp = document.querySelector(`.film-details`);
+    if (popUp) {
+      popUp.remove();
+    }
+  }
+});
 
-/*
-  Найдите обложку фильма,
-  заголовок и элемент с количеством комментариев в первом компоненте
-  и кнопку закрытия во втором компоненте
-  (кстати, не нужно ходить за ними в document, вы же описали метод getElement; -) Навесьте на них пустые обработчики события click.
-*/
-
-// обложка фильмов
-const posterAll = bodyElement.querySelectorAll(`.film-card__poster`);
-// заголовок фильмов
-const filmTitleAll = bodyElement.querySelectorAll(`.film-card__title`);
-// комментарии фильмов
-const commentAll = bodyElement.querySelectorAll(`.film-card__comments`);
-
-let showPopAp = [...posterAll, ...filmTitleAll, ...commentAll];
-
-
-for (let item of showPopAp) {
-  item.onclick = () => {
-
-    // отрисовать поп-ап
-    const pop = createRandomFilm();
-    render(footerElement, new PopArtFilmlComponent(pop).getElement(), RenderPosition.BEFOREEND);
-
-    // отрисовать комментарии
-    const comments = bodyElement.querySelector(`.form-details__bottom-container`);
-    const popComm = createRandomFilm();
-    render(comments, new CommentsComponent(popComm).getElement(), RenderPosition.BEFOREEND);
-
-    // кнопка закрыть поп-арт
-    const filmDetailsCloseBtn = footerElement.querySelector(`.film-details__close-btn`);
-
-    filmDetailsCloseBtn.onclick = () => {
-      // почему не работает закрытие ? как сделать правильно
-      new PopArtFilmlComponent().removeElement();
-      console.log(`test`);
-    };
-
-    // ESC - почему не работает закрытие ? как сделать правильно
-    document.addEventListener(`keydown`, function (evt) {
-      if (evt.keyCode === 27) {
-        new PopArtFilmlComponent().removeElement();
-        console.log(`test`);
-      }
-    });
-
-  };
-}
+// cортировка defoult
+// sort__button sort__button-default sort__button--active

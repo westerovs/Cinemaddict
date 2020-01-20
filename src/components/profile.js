@@ -2,15 +2,26 @@
 import {createElement} from '../utils.js';
 
 // рейтинг в профиле
-// const RATINGNAME = [
-//   `Movie Buff`,
-//   `King`,
-//   `Gury`,
-//   `Expert`,
-//   `Ninja`,
-//   `Master`,
-//   `Warrior`,
-// ];
+const RATINGNAMES = [
+  `Movie Buff`,
+  `King`,
+  `Gury`,
+  `Expert`,
+  `Ninja`,
+  `Master`,
+  `Warrior`,
+];
+
+const FILMS_RANK_STEP = 10;
+
+// ???
+const getRank = (filmsCount) => {
+  let index = Math.floor(filmsCount / FILMS_RANK_STEP);
+  if (index >= RATINGNAMES.length) {
+    index = RATINGNAMES.length - 1;
+  }
+  return RATINGNAMES[index];
+};
 
 
 const createProfileTemplate = () => {

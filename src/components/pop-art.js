@@ -1,9 +1,10 @@
 import {createElement} from '../utils.js';
+import {render, RenderPosition} from '../utils.js';
 
 
 // поп-арт - закоментировал тут и в main.js, т.к он контент закрывает
-const createPopArtFilmlTemplate = (pop) => {
-  const {original, poster, name, rating, time, watched, favorite, watchlist, age, director, writers, actors, release, countrynames, ganrePop, fullDescription} = pop;
+const createPopArtFilmlTemplate = (film) => {
+  const {original, poster, name, rating, time, watched, favorite, watchlist, age, director, writers, actors, release, countrynames, ganrePop, fullDescription} = film;
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -89,23 +90,28 @@ const createPopArtFilmlTemplate = (pop) => {
 };
 
 export default class PopArtFilmlComponent {
-  constructor(pop) {
-    this._pop = pop;
+  constructor(film) {
+    this._film = film;
     this._element = null;
   }
 
   getTemplate() {
-    return createPopArtFilmlTemplate(this._pop);
+    return createPopArtFilmlTemplate(this._film);
   }
 
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
+      this._element.querySelector(`.film-details__close-btn`).onclick = () => {
+        this.removeElement();
+      };
     }
+
     return this._element;
   }
 
   removeElement() {
+    this._element.remove();
     this._element = null;
   }
 }

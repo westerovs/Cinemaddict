@@ -166,9 +166,9 @@ const createRandomFilm = () => {
     genre: randomItem(FILM_GENRES),
     description: randomItem([...descriptionFilmSet]),
     comments: randomNumber(),
-    watched: Math.random() > 0.5,
-    favorite: Math.random() > 0.5,
-    watchlist: Math.random() > 0.5,
+    watched: Math.random() > 0.5,  // //
+    favorite: Math.random() > 0.5,  // //
+    watchlist: Math.random() > 0.5,  // //
     // доп. для поп-апа
     original: randomItem(original),
     director: randomItem(director),
@@ -183,9 +183,16 @@ const createRandomFilm = () => {
   };
 };
 
+const createRandomFilms = (count) => {
+  const result = new Array(count).fill(``);
+  return result.map((item) => {
+    return createRandomFilm();
+  });
+};
 
 export {
   randomItem,
   randomNumber,
-  createRandomFilm
+  createRandomFilm,
+  createRandomFilms,
 };
