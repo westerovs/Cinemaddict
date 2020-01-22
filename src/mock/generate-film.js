@@ -26,18 +26,22 @@ const filmNames = [
   `Бойцовский клуб`,
   `Большая рыба`,
   `Titanicss`,
-  `Terminator`
+  `Terminator`,
+  `Tom and Jerry`,
 ];
 
 // жарны
 const FILM_GENRES = [
-  `Musical`,
-  `Triller`,
-  `Comedy`,
+  `Мюзикл`,
+  `Триллер`,
+  `Комедия`,
   `Home-video`,
-  `Documental`,
-  `Drama`,
-  `Horror`,
+  `Фантастика`,
+  `Мелодрама`,
+  `Документальный`,
+  `Исторический`,
+  `Драма`,
+  `Ужасы`,
 ];
 
 // описание
@@ -163,12 +167,13 @@ const randomParameters = () => {
   return {
     poster: randomItem(posters),
     name: randomItem(filmNames),
+    comments: randomNumber(),
+
     rating: `${randomNumber(1, 10)}.${randomNumber(1, 10)}`,
     year: randomNumber(1920, 2019),
     time: `${randomNumber(1, 5)}h ${randomNumber(1, 60)}m`,
     genre: randomItem(FILM_GENRES),
     description: randomItem([...descriptionFilmSet]),
-    comments: randomNumber(),
 
     watched: Math.random() > 0.5,
     favorite: Math.random() > 0.5,
