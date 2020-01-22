@@ -3,6 +3,7 @@ import {render, RenderPosition} from '../utils.js';
 import PopArtFilmlComponent from '../components/popUp.js';
 import Comments from './comments.js';
 
+
 // // ******************** шаблон фильма *********************
 const createFilmCardTemplate = (film) => {
   const {poster, name, rating, year, time, genre, description, comments, watched, favorite, watchlist} = film;
@@ -19,7 +20,7 @@ const createFilmCardTemplate = (film) => {
        <p class="film-card__description">
         ${description}
        </p>
-       <a class="film-card__comments">${comments}comments</a>
+       <a class="film-card__comments">${comments} comments</a>
        <form class="film-card__controls">
          <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
          <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${watched ? `film-card__controls-item--active` : ``}">Mark as watched</button>
@@ -46,18 +47,18 @@ export default class FilmCardComponent {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
       // обложка, постер, комментарии
-      const poster = this._element.querySelector(`.film-card__poster`);
-      const filmTitle = this._element.querySelector(`.film-card__title`);
-      const comment = this._element.querySelector(`.film-card__comments`);
-      poster.onclick = () => {
-        this.showPopUp();
-      };
-      filmTitle.onclick = () => {
-        this.showPopUp();
-      };
-      comment.onclick = () => {
-        this.showPopUp();
-      };
+      // const poster = this._element.querySelector(`.film-card__poster`);
+      // const filmTitle = this._element.querySelector(`.film-card__title`);
+      // const comment = this._element.querySelector(`.film-card__comments`);
+      // poster.onclick = () => {
+      //   this.showPopUp();
+      // };
+      // filmTitle.onclick = () => {
+      //   this.showPopUp();
+      // };
+      // comment.onclick = () => {
+      //   this.showPopUp();
+      // };
     }
     return this._element;
   }

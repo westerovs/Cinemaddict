@@ -101,9 +101,9 @@ export default class PopUpFilmlComponent {
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
-      this._element.querySelector(`.film-details__close-btn`).onclick = () => {
-        this.removeElement();
-      };
+      // this._element.querySelector(`.film-details__close-btn`).onclick = () => {
+      //   this.removeElement();
+      // };
     }
 
     return this._element;
