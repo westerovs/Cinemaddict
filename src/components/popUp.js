@@ -1,9 +1,8 @@
 import {createElement} from '../utils.js';
-import {render, RenderPosition} from '../utils.js';
 
 
 // поп-арт - закоментировал тут и в main.js, т.к он контент закрывает
-const createPopArtFilmlTemplate = (film) => {
+const createPopUpFilmlTemplate = (film) => {
   const {original, poster, name, rating, time, watched, favorite, watchlist, age, director, writers, actors, release, countrynames, ganrePop, fullDescription} = film;
   return (
     `<section class="film-details">
@@ -89,14 +88,14 @@ const createPopArtFilmlTemplate = (film) => {
   );
 };
 
-export default class PopArtFilmlComponent {
+export default class PopUpFilmlComponent {
   constructor(film) {
     this._film = film;
     this._element = null;
   }
 
   getTemplate() {
-    return createPopArtFilmlTemplate(this._film);
+    return createPopUpFilmlTemplate(this._film);
   }
 
   getElement() {

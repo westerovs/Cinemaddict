@@ -143,20 +143,23 @@ const fullDescription = [
   `Далеко-далеко за словесными горами в стране, гласных и согласных живут рыбные тексты. Раз подзаголовок вскоре всеми использовало ее напоивший залетают ты, текста! Его приставка ее океана своего вершину, сих букв однажды над.`,
 ];
 
-
 // рендер текст
 function randomItem(items) {
   let random = Math.floor(Math.random() * items.length);
   return items[random];
 }
+
 // рендер случайных чисел
 function randomNumber(min = 1, max = 999) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+// статус active
+// film-card__controls-item--active
 
+// -------------------------------------------------------------
 // функция по созданию шаблона карточки фильма, чтобы она на вход принимала данные — объект из предыдущего шага.
-const createRandomFilm = () => {
+const randomParameters = () => {
   return {
     poster: randomItem(posters),
     name: randomItem(filmNames),
@@ -166,9 +169,11 @@ const createRandomFilm = () => {
     genre: randomItem(FILM_GENRES),
     description: randomItem([...descriptionFilmSet]),
     comments: randomNumber(),
-    watched: Math.random() > 0.5,  // //
-    favorite: Math.random() > 0.5,  // //
-    watchlist: Math.random() > 0.5,  // //
+
+    watched: Math.random() > 0.5,
+    favorite: Math.random() > 0.5,
+    watchlist: Math.random() > 0.5,
+
     // доп. для поп-апа
     original: randomItem(original),
     director: randomItem(director),
@@ -183,16 +188,18 @@ const createRandomFilm = () => {
   };
 };
 
+
+// -------------------------------------------------------------
+// создание карточек фильма
 const createRandomFilms = (count) => {
   const result = new Array(count).fill(``);
-  return result.map((item) => {
-    return createRandomFilm();
+  return result.map(() => {
+    return randomParameters();
   });
 };
 
+
 export {
-  randomItem,
   randomNumber,
-  createRandomFilm,
   createRandomFilms,
 };

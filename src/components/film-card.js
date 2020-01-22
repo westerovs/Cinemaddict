@@ -1,6 +1,6 @@
 import {createElement} from '../utils.js';
 import {render, RenderPosition} from '../utils.js';
-import PopArtFilmlComponent from '../components/pop-art.js';
+import PopArtFilmlComponent from '../components/popUp.js';
 import Comments from './comments.js';
 
 // // ******************** шаблон фильма *********************
@@ -19,18 +19,18 @@ const createFilmCardTemplate = (film) => {
        <p class="film-card__description">
         ${description}
        </p>
-       <a class="film-card__comments">${comments} comments</a>
+       <a class="film-card__comments">${comments}comments</a>
        <form class="film-card__controls">
-         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist}">Add to watchlist</button>
-         <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${watched}">Mark as watched</button>
-         <button class="film-card__controls-item button film-card__controls-item--favorite ${favorite}">Mark as favorite</button>
+         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
+         <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${watched ? `film-card__controls-item--active` : ``}">Mark as watched</button>
+         <button class="film-card__controls-item button film-card__controls-item--favorite ${favorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
        </form>
     </article>`
   );
 };
 
 
-export default class FilmCard {
+export default class FilmCardComponent {
   constructor(film) {
     this._comments = new Comments(film.comments);
     this._popUp = new PopArtFilmlComponent(film);
@@ -43,24 +43,18 @@ export default class FilmCard {
   }
 
   getElement() {
-
     if (!this._element) {
       this._element = createElement(this.getTemplate());
-      // обложка фильмов
+      // обложка, постер, комментарии
       const poster = this._element.querySelector(`.film-card__poster`);
-      // заголовок фильмов
       const filmTitle = this._element.querySelector(`.film-card__title`);
-      // комментарии фильмов
       const comment = this._element.querySelector(`.film-card__comments`);
-
       poster.onclick = () => {
         this.showPopUp();
       };
-
       filmTitle.onclick = () => {
         this.showPopUp();
       };
-
       comment.onclick = () => {
         this.showPopUp();
       };
@@ -72,11 +66,20 @@ export default class FilmCard {
     this._element = null;
   }
 
+  // вызвать popUp
   showPopUp() {
     const popUp = this._popUp.getElement();
     render(document.body, popUp, RenderPosition.BEFOREEND);
     const commentsContainer = popUp.querySelector(`.form-details__bottom-container`);
     render(commentsContainer, this._comments.getElement(), RenderPosition.BEFOREEND);
+    // закрыть popUp
+    document.addEventListener(`keydown`, function (evt) {
+      if (evt.keyCode === 27) {
+        if (popUp) {
+          popUp.remove();
+        }
+      }
+    });
   }
 }
 
