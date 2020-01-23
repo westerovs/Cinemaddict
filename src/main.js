@@ -17,15 +17,9 @@ import {render, RenderPosition} from './utils.js';
 // -------------------------------------------------------------
 // ----------------------  cчётчик отрисовки -------------------
 const FILMS_COUNT = 22;
-// const FILMS_SHOWING_ON_START = 5;
-// const FILMS_SHOWING_BY_BUTTON = 5;
-// const FILMS_EXTRA_COUNT = 2;
-
-
-// -------------------------------------------------------------
-// ----------------------- main containers ---------------------
-const siteHeaderElement = document.querySelector(`.header`);
-const siteMainElement = document.querySelector(`.main`);
+const FILMS_SHOWING_ON_START = 5;
+const FILMS_SHOWING_BY_BUTTON = 5;
+const FILMS_EXTRA_COUNT = 2;
 
 
 // -------------------------------------------------------------
@@ -33,44 +27,12 @@ const siteMainElement = document.querySelector(`.main`);
 const films = createRandomFilms(FILMS_COUNT);
 
 
-// -------------------------------------------------------------
-// ---------------- выбрынные, просмотренно, любимые -----------
-const watchlistFilmsCount = films.filter((item) => item.watchlist).length;
-const watchedFilmsCount = films.filter((item) => item.watched).length;
-const favoriteFilmsCount = films.filter((item) => item.favorite).length;
-
-render(siteMainElement, new NavigationComponent(watchlistFilmsCount, watchedFilmsCount, favoriteFilmsCount).getElement(), RenderPosition.BEFOREEND);
-
-// -------------------------------------------------------------
-// ----------------------- рендер на страницу ------------------
-// профиль
-render(siteHeaderElement, new ProfileComponent().getElement(), RenderPosition.BEFOREEND);
-// сортировка
-render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
-// Список фильмов
-render(siteMainElement, new FilmsListComponent().getElement(), RenderPosition.BEFOREEND);
-// выбрынные, просмотренно, любимые
-render(siteMainElement, new NavigationComponent(watchlistFilmsCount, watchedFilmsCount, favoriteFilmsCount).getElement(), RenderPosition.BEFOREEND);
-
-// -------------------------------------------------------------
-// ----------------------- функция отрисовки фильмов -----------
-const filmList = siteMainElement.querySelector(`.films-list__container`);
-
-function renderFilms(element, count = films) {
-  const fragment = document.createDocumentFragment();
-  count.forEach((film) => {
-    fragment.appendChild(new FilmCardComponent(film).getElement());
-  });
-  element.appendChild(fragment);
-}
-renderFilms(filmList);
-
-// -------------------------------------------------------------
-// ----------------------- tоp rated / comments ----------------
+const FIRST_ELEMENT_INDEX = 0;
+/* Сохраняют отфильтрованные (фильтр возвращает карточки только с рейтингом > 0 и количеством комментариев > 0) и отсортированные массивы по рейтингу и комментариям */
 // const topRatedFilms = films
 //   .filter((film) => film.rating > 0)
 //   .sort((a, b) => b.rating - a.rating)
-//   .slice(0, FILMS_EXTRA_COUNT);
+//   .slice(FIRST_ELEMENT_INDEX, FILMS_EXTRA_COUNT);
 
 
 // // самые комм. фильмы
@@ -80,23 +42,118 @@ renderFilms(filmList);
 //   .slice(0, FILMS_EXTRA_COUNT);
 
 
+// ***************************************************************
+// ***************************************************************
+// ********************* как у врага *****************************
+function renderFilm(filmsListElement, film) {
+  const filmCardComponent = new FilmCardComponent(film);
+  // console.log(filmCardComponent.getElement());
+  console.log(filmsListElement);
+  // место для popUp
+
+  render(filmsListElement, filmCardComponent.getElement());
+}
+
+
+// Ищет щапку сайта
+const siteMainElement = document.querySelector(`.main`);
+
+
+// Сохраняет компонент списка фильмов, добавляет его в main
+const filmsListComponent = new FilmsListComponent();
+render(siteMainElement, filmsListComponent.getElement());
+
+
+// Находит основной список фильмов
+const filmsListElement = filmsListComponent.getElement().querySelector(`.films-list`);
+const basicFilmsListElement = filmsListElement.querySelector(`.films-list__container`);
+
+
+// Сохраняет количество показываемых карточек
+let showingCardsCount = FILMS_SHOWING_ON_START;
+
+
+/* Добавляет в основной список фильмов 5 шаблонов карточки фильма */
+for (const film of films.slice(FIRST_ELEMENT_INDEX, showingCardsCount)) {
+  renderFilm(basicFilmsListElement, film);
+}
+
+// ***************************************************************
+// ***************************************************************
+// ***************************************************************
+
 // -------------------------------------------------------------
-// ----------------------- экстра фильмы -----------------------
-// const topRatedFilmsList = siteMainElement.querySelector(`#top-rated`);
-// const mostCommentedFilmsList = siteMainElement.querySelector(`#most-commented`);
-// topRatedFilmsList.style.outline = `2px dashed gold`;
-// mostCommentedFilmsList.style.outline = `2px dashed gold`;
+// ----------------------- main containers ---------------------
+// const siteHeaderElement = document.querySelector(`.header`);
+// const siteMainElement = document.querySelector(`.main`);
 
 
-// -------------------------------------------------------------
-// ----------------------- добавить карточек -------------------
+// // -------------------------------------------------------------
+// // ---------------- выбрынные, просмотренно, любимые -----------
+// // const watchlistFilmsCount = films.filter((item) => item.watchlist).length;
+// // const watchedFilmsCount = films.filter((item) => item.watched).length;
+// // const favoriteFilmsCount = films.filter((item) => item.favorite).length;
 
-const boardElement = siteMainElement.querySelector(`.films-list`);
-render(boardElement, new BtnShowMoreComponent().getElement(), RenderPosition.BEFOREEND);
-// const btnShowMore = siteMainElement.querySelector(`.films-list__show-more`);
+// // render(siteMainElement, new NavigationComponent(watchlistFilmsCount, watchedFilmsCount, favoriteFilmsCount).getElement(), RenderPosition.BEFOREEND);
+
+
+// // -------------------------------------------------------------
+// // ----------------------- рендер на страницу ------------------
+// // профиль
+// render(siteHeaderElement, new ProfileComponent().getElement(), RenderPosition.BEFOREEND);
+// // сортировка
+// render(siteMainElement, new SortComponent().getElement(), RenderPosition.BEFOREEND);
+// // Список фильмов
+// render(siteMainElement, new FilmsListComponent().getElement(), RenderPosition.BEFOREEND);
+
+
+// // -------------------------------------------------------------
+// // ----------------------- функция отрисовки фильмов -----------
+
+// // function renderFilm(element, count = films) {
+// //   const fragment = document.createDocumentFragment();
+// //   count.forEach((film) => {
+// //     fragment.appendChild(new FilmCardComponent(film).getElement());
+// //   });
+// //   element.appendChild(fragment);
+// // }
+
+// // // мой вызов рендера карточек
+// // const filmList = siteMainElement.querySelector(`.films-list__container`);
+// // renderFilm(filmList);
+
+
+// // -------------------------------------------------------------
+// // ----------------------- tоp rated / comments ----------------
+// // const topRatedFilms = films
+// //   .filter((film) => film.rating > 0)
+// //   .sort((a, b) => b.rating - a.rating)
+// //   .slice(0, FILMS_EXTRA_COUNT);
+
+
+// // // самые комм. фильмы
+// // const mostCommentFilms = films
+// //   .filter((film) => film.comments > 0)
+// //   .sort((a, b) => b.comments - a.comments)
+// //   .slice(0, FILMS_EXTRA_COUNT);
+
+// // -------------------------------------------------------------
+// // ----------------------- экстра фильмы -----------------------
+// // const topRatedFilmsList = siteMainElement.querySelector(`#top-rated`);
+// // const mostCommentedFilmsList = siteMainElement.querySelector(`#most-commented`);
+// // topRatedFilmsList.style.outline = `2px dashed gold`;
+// // mostCommentedFilmsList.style.outline = `2px dashed gold`;
+
+
+// // -------------------------------------------------------------
+// // ----------------------- добавить карточек -------------------
+
+// const boardElement = siteMainElement.querySelector(`.films-list`);
+// render(boardElement, new BtnShowMoreComponent().getElement(), RenderPosition.BEFOREEND);
+// // const btnShowMore = siteMainElement.querySelector(`.films-list__show-more`);
 
 // btnShowMore.onclick = () => {
-//   renderFilms(filmList, films);
+//   renderFilm(filmList, films);
 //   const allFilmCard = siteMainElement.querySelectorAll(`.films-list .film-card`);
 //   if (allFilmCard.length >= 15) {
 //     btnShowMore.style.display = `none`;
@@ -164,7 +221,7 @@ render(boardElement, new BtnShowMoreComponent().getElement(), RenderPosition.BEF
 // *************************************************************
 // *************************************************************
 // *************************************************************
-// const renderFilms = (filmsListElement, film) => {
+// const renderFilm = (filmsListElement, film) => {
 
 //   /* Сохраняют компоненты карточки фильма и попапа с информацией */
 //   const filmComponent = new FilmComponent(film);
