@@ -16,7 +16,7 @@ const createNavigationTemplate = function (watchlist, history, favorites) {
 };
 
 
-export default class Navigation {
+export default class FilterNavComponent {
   constructor(watchlist, history, favorites) {
     this._watchlist = watchlist;
     this._history = history;

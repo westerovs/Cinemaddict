@@ -5,7 +5,6 @@ export const RenderPosition = {
   BEFOREEND: `beforeend`
 };
 
-
 // ф-ция через innerHTML в div вставляет нашу разметку, превращает строку в dom узел
 // и возвращает DOM узел без лишней обёртки
 // ф-ция нужна для того, что бы возвращать DOM узел
@@ -18,8 +17,7 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
-
-export const render = (container, element, place) => {
+export const render = (container, element, place = RenderPosition.BEFOREEND) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);

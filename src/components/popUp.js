@@ -2,7 +2,7 @@ import {createElement} from '../utils.js';
 
 
 // поп-арт - закоментировал тут и в main.js, т.к он контент закрывает
-const createPopUpFilmlTemplate = (film) => {
+const createPopupFilmlTemplate = (film) => {
   const {original, poster, name, rating, time, watched, favorite, watchlist, age, director, writers, actors, release, countrynames, ganrePop, fullDescription} = film;
   return (
     `<section class="film-details">
@@ -88,14 +88,14 @@ const createPopUpFilmlTemplate = (film) => {
   );
 };
 
-export default class PopUpFilmlComponent {
+export default class PopupFilmlComponent {
   constructor(film) {
     this._film = film;
     this._element = null;
   }
 
   getTemplate() {
-    return createPopUpFilmlTemplate(this._film);
+    return createPopupFilmlTemplate(this._film);
   }
 
   getElement() {
