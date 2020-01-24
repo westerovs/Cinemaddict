@@ -17,14 +17,12 @@ export default class Sort {
     // null т.к на момент создания экземпляра нет никаких DOM узлов
     this._element = null;
   }
-
   // метод getTemplate возвращает разметку(в виде строки)
   getTemplate() {
     return createSortTemplate();
   }
-
+  /* Если DOM-элемента раньше не существовало, сохраняет созданный из шаблона DOM-элемент и возвращает его */
   getElement() {
-    /* Если DOM-элемента раньше не существовало, сохраняет созданный из шаблона DOM-элемент и возвращает его */
     // проверка: cуществует ли у этого инстанса(экземпляра) элемент
     // если у this._element будет null, то мы сюда провалимся и запишем в this._element
     // функцию createElement с результатом getTemplate
@@ -36,7 +34,7 @@ export default class Sort {
     // возвращает dom узел
     return this._element;
   }
-
+  // удаляет dom узел
   removeElement() {
     this._element = null;
   }

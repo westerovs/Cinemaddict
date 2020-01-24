@@ -1,4 +1,4 @@
-// ----------------------- компоненты --------------------------
+// ----------------------- Component --------------------------
 import ProfileComponent from './components/profile.js';
 import FilterNavComponent from './components/filter-nav.js';
 import SortComponent from './components/sort.js';
@@ -21,14 +21,12 @@ const SLICE_ELEMENT_INDEX = 0;
 let showingCardsMore = FILMS_SHOWING_ON_START;
 
 
-// -------------------------------------------------------------
 // ----------------- главный массив с фильмами -----------------
 const films = createRandomFilms(FILMS_MAX_COUNT);
 // Get количество всех фильмов
 const allFilmsQuantity = films.length;
 
 
-// -------------------------------------------------------------
 // ----------------- Get mains container -----------------------
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = document.querySelector(`.header`);
@@ -41,7 +39,6 @@ render(siteHeaderElement, new ProfileComponent().getElement());
 render(siteMainElement, new SortComponent().getElement());
 
 
-// -------------------------------------------------------------
 // ----------- filter * выбрынные/просмотренно/любимые ---------
 const watchlistFilmsCount = films.filter((item) => item.watchlist).length;
 const watchedFilmsCount = films.filter((item) => item.watched).length;
@@ -49,7 +46,6 @@ const favoriteFilmsCount = films.filter((item) => item.favorite).length;
 render(siteMainElement, new FilterNavComponent(watchlistFilmsCount, watchedFilmsCount, favoriteFilmsCount).getElement());
 
 
-// -------------------------------------------------------------
 // ★ --------------- ф-ция рендера карточки фильма ---------- ★
 function renderFilm(filmsListElement, film) {
 
@@ -84,7 +80,6 @@ function renderFilm(filmsListElement, film) {
 }
 
 
-// -------------------------------------------------------------
 // ----------------- Get шаблон списка фильмов, render его в main
 const filmsListComponent = new FilmsListComponent();
 render(siteMainElement, filmsListComponent.getElement());
@@ -93,14 +88,69 @@ const filmsListElement = filmsListComponent.getElement().querySelector(`.films-l
 const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
 
 
-// -------------------------------------------------------------
 // ★ --------------- render фильмов в film-list ------------- ★
-for (const itemFilm of films.slice(SLICE_ELEMENT_INDEX, showingCardsMore)) {
-  renderFilm(filmsListContainerElement, itemFilm);
-}
+const renderFilms = () => {
+  for (const itemFilm of films.slice(SLICE_ELEMENT_INDEX, showingCardsMore)) {
+    renderFilm(filmsListContainerElement, itemFilm);
+  }
+};
+
+renderFilms();
 
 
-// -------------------------------------------------------------
+// ★ --------------- remove фильмов из film-list ------------ ★
+const removeFilms = () => {
+  const filmElementsAll = filmsListElement.querySelectorAll(`.film-card`);
+  filmElementsAll.forEach((film) => film.remove());
+};
+
+
+// ----------------- sorting -----------------------------------
+const btnSortDefault = document.querySelector(`.sort__button-default`);
+const btnSortDate = document.querySelector(`.sort__button-date`);
+const btnSortRating = document.querySelector(`.sort__button-rating`);
+
+const btnsSortArr = [btnSortDefault, btnSortDate, btnSortRating];
+
+const sortFilms = (event) => {
+  let field;
+
+  switch (event.target) {
+    case btnSortDefault:
+      field = `name`;
+      break;
+    case btnSortDate:
+      field = `year`;
+      break;
+    case btnSortRating:
+      field = `rating`;
+      break;
+    default:
+      return;
+  }
+
+  btnsSortArr.forEach((btn) => {
+    btn.classList.remove(`sort__button--active`);
+
+    if (btn === event.target) {
+      btn.classList.add(`sort__button--active`);
+    }
+  });
+
+  const sortFunction = (a, b) => b[field] > a[field] ? 1 : -1;
+
+  films.sort(sortFunction);
+  removeFilms();
+  renderFilms();
+};
+
+btnsSortArr.forEach((btn) => {
+  if (btn) {
+    btn.onclick = sortFilms;
+  }
+});
+
+
 // ----------------- Get Top rated/Most commented --------------
 const topRatedFilmsList = siteMainElement.querySelector(`#top-rated`);
 const mostCommentedFilmsList = siteMainElement.querySelector(`#most-commented`);
@@ -109,7 +159,7 @@ const topRatedFilms = films
   .filter((film) => film.rating > 0)
   .sort((a, b) => b.rating - a.rating)
   .slice(SLICE_ELEMENT_INDEX, FILMS_EXTRA_COUNT);
-for (const itemFilm of topRatedFilms.slice(SLICE_ELEMENT_INDEX, FILMS_EXTRA_COUNT)) {
+for (const itemFilm of topRatedFilms) {
   renderFilm(topRatedFilmsList, itemFilm);
 }
 
@@ -117,12 +167,11 @@ const mostCommentFilms = films
   .filter((film) => film.comments > 0)
   .sort((a, b) => b.comments - a.comments)
   .slice(SLICE_ELEMENT_INDEX, FILMS_EXTRA_COUNT);
-for (const itemFilm of mostCommentFilms.slice(SLICE_ELEMENT_INDEX, FILMS_EXTRA_COUNT)) {
+for (const itemFilm of mostCommentFilms) {
   renderFilm(mostCommentedFilmsList, itemFilm);
 }
 
 
-// -------------------------------------------------------------
 // ----------------- кнопка ShowMore ---------------------------
 const btnShowMoreElement = new BtnShowMoreComponent().getElement();
 render(filmsListElement, btnShowMoreElement);
@@ -144,33 +193,14 @@ btnShowMore.onclick = () => {
 };
 
 
-// -------------------------------------------------------------
-// ----------------- sort rating -------------------------------
-// сортировать films и вызыавть рендер всего массива
-// вызывать цикл от 0 до текущего и рендеринга
-// .sort((a, b) => a.rating - b.rating);
-const btnSortRating = document.querySelector(`.sort__button-rating`);
-
-btnSortRating.onclick = () => {
-
-  for (let item of films.slice(0, showingCardsMore).sort((a, b) => a.rating - b.rating)) {
-    console.log(item);
-    renderFilm(filmsListContainerElement, item);
-  }
-
-};
-
-
-// -------------------------------------------------------------
 // ----------------- Oбщее количество фильмов в подвалe --------
 const footerStatisticsElement = siteFooterElement.querySelector(`.footer__statistics p`);
 footerStatisticsElement.textContent = `${allFilmsQuantity} movies inside`;
 
 
-// -------------------------------------------------------------
 // ----------------- ESK popUp ---------------------------------
-document.addEventListener(`keydown`, function (evt) {
-  if (evt.keyCode === 27) {
+document.addEventListener(`keydown`, function (event) {
+  if (event.keyCode === 27) {
     const popUp = document.querySelector(`.film-details`);
     if (popUp) {
       popUp.remove();

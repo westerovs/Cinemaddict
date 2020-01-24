@@ -1,6 +1,5 @@
 import {createElement} from '../utils.js';
 import {render, RenderPosition} from '../utils.js';
-// import PopArtFilmlComponent from '../components/popUp.js';
 import Comments from './comments.js';
 
 
@@ -34,7 +33,6 @@ const createFilmCardTemplate = (film) => {
 export default class FilmCardComponent {
   constructor(film) {
     this._comments = new Comments(film.comments);
-    // this._popUp = new PopArtFilmlComponent(film);
     this._film = film;
     this._element = null;
   }
@@ -46,19 +44,6 @@ export default class FilmCardComponent {
   getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
-      // обложка, постер, комментарии
-      // const poster = this._element.querySelector(`.film-card__poster`);
-      // const filmTitle = this._element.querySelector(`.film-card__title`);
-      // const comment = this._element.querySelector(`.film-card__comments`);
-      // poster.onclick = () => {
-      //   this.showPopUp();
-      // };
-      // filmTitle.onclick = () => {
-      //   this.showPopUp();
-      // };
-      // comment.onclick = () => {
-      //   this.showPopUp();
-      // };
     }
     return this._element;
   }
@@ -67,20 +52,5 @@ export default class FilmCardComponent {
     this._element = null;
   }
 
-  // вызвать popUp
-  // showPopUp() {
-  //   const popUp = this._popUp.getElement();
-  //   render(document.body, popUp, RenderPosition.BEFOREEND);
-  //   const commentsContainer = popUp.querySelector(`.form-details__bottom-container`);
-  //   render(commentsContainer, this._comments.getElement(), RenderPosition.BEFOREEND);
-  //   // закрыть popUp
-  //   document.addEventListener(`keydown`, function (evt) {
-  //     if (evt.keyCode === 27) {
-  //       if (popUp) {
-  //         popUp.remove();
-  //       }
-  //     }
-  //   });
-  // }
 }
 

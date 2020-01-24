@@ -1,5 +1,4 @@
 import {randomNumber} from '../mock/generate-film.js';
-
 import {createElement} from '../utils.js';
 
 // рейтинг в профиле
