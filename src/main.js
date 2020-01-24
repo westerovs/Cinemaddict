@@ -207,11 +207,3 @@ document.addEventListener(`keydown`, function (event) {
     }
   }
 });
-
-
-// filmsListContainerElement = `.films-list__container`
-// const allFilmCard = document.querySelectorAll(`.films-list .film-card`);
-//
-//
-// const btnSortDefault = document.querySelector(`.sort__button-default`);
-// const btnSortDate = document.querySelector(`.sort__button-date`);
