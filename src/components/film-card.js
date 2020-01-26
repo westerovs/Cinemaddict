@@ -1,13 +1,11 @@
-import {createElement} from '../utils.js';
-import {render, RenderPosition} from '../utils.js';
-import Comments from './comments.js';
+import AbstractComponent from './abstract-component.js';
 
 
-// // ******************** шаблон фильма *********************
+// ******************** шаблон фильма *********************
 const createFilmCardTemplate = (film) => {
   const {poster, name, rating, year, time, genre, description, comments, watched, favorite, watchlist} = film;
   return (
-    `<article class="film-card" data-rating="${rating}">
+    `<article class="film-card">
     <h3 class="film-card__title">${name}</h3>
        <p class="film-card__rating">${rating}</p>
        <p class="film-card__info">
@@ -29,28 +27,18 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-
-export default class FilmCardComponent {
+// класс наследуется от AпbstractComponent
+export default class FilmCardComponent extends AbstractComponent {
   constructor(film) {
-    this._comments = new Comments(film.comments);
+    // Ключевое слово super используется для вызова функций, принадлежащих родителю объекта.
+    // В конструкторе ключевое слово super() используется как функция, вызывающая родительский конструктор. Её необходимо вызвать до первого обращения к ключевому слову this в теле конструктора. Ключевое слово super также может быть использовано для вызова функций родительского объекта.
+    super();
+
     this._film = film;
-    this._element = null;
   }
 
+  // переопределяю метод getTemplate из интерфейса и говорю, что для film у меня метод getTemplate выглядит так
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-
 }
-

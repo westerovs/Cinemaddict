@@ -1,5 +1,6 @@
 import {randomNumber} from '../mock/generate-film.js';
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
+
 
 // рейтинг в профиле
 const RATINGNAMES = [
@@ -12,6 +13,7 @@ const RATINGNAMES = [
   `Warrior`,
   `President`,
 ];
+
 
 const FILMS_RANK_STEP = 1;
 
@@ -35,23 +37,8 @@ const createProfileTemplate = () => {
 };
 
 // класс который экспортируется из этого компонента по умолчанию
-export default class Profile {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Profile extends AbstractComponent {
   getTemplate() {
     return createProfileTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

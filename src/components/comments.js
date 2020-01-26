@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 const commentsTemplate = (popComm) => {
   const {comments} = popComm;
@@ -42,25 +42,14 @@ const commentsTemplate = (popComm) => {
 };
 
 
-export default class Comments {
+export default class Comments extends AbstractComponent {
   constructor(popComm) {
+    super();
     this._popComm = popComm;
-    this._element = null;
   }
 
   getTemplate() {
     return commentsTemplate(this._popComm);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

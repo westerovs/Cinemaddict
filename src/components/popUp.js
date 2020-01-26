@@ -1,7 +1,6 @@
-import {createElement} from '../utils.js';
+import AbstractComponent from './abstract-component.js';
 
 
-// поп-арт - закоментировал тут и в main.js, т.к он контент закрывает
 const createPopupFilmlTemplate = (film) => {
   const {original, poster, name, rating, time, watched, favorite, watchlist, age, director, writers, actors, release, countrynames, ganrePop, fullDescription} = film;
   return (
@@ -88,26 +87,16 @@ const createPopupFilmlTemplate = (film) => {
   );
 };
 
-export default class PopupFilmlComponent {
+
+export default class PopupFilmlComponent extends AbstractComponent {
   constructor(film) {
+    super();
+
     this._film = film;
     this._element = null;
   }
 
   getTemplate() {
     return createPopupFilmlTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element.remove();
-    this._element = null;
   }
 }

@@ -9,7 +9,7 @@ import PopupComponent from './components/popup.js';
 import CommentsComponent from './components/comments.js';
 // outher
 import {createRandomFilms} from './mock/generate-film.js';
-import {render, RenderPosition} from './utils.js';
+import {render, RenderPosition} from './utils/render.js';
 
 
 const FILMS_MAX_COUNT = 13;
