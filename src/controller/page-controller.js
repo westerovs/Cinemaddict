@@ -7,7 +7,6 @@ import {siteFooterElement} from '../main.js';
 
 // ★ --------------- ф-ция рендера карточки фильма ---------- ★
 export function renderFilm(filmsListElement, film) {
-
   // Get компоненты в переменные
   const filmCardComponent = new FilmCardComponent(film);
   const popupComponent = new PopupComponent(film);
