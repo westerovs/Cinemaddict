@@ -3,13 +3,12 @@ import ProfileComponent from './components/profile.js';
 import FilterNavComponent from './components/filter-nav.js';
 import SortComponent from './components/sort.js';
 import FilmsListComponent from './components/film-list.js';
-import FilmCardComponent from './components/film-card.js';
 import BtnShowMoreComponent from './components/btn-show-more.js';
-import PopupComponent from './components/popup.js';
-import CommentsComponent from './components/comments.js';
 // outher
 import {createRandomFilms} from './mock/generate-film.js';
-import {render, RenderPosition} from './utils/render.js';
+import {render} from './utils/render.js';
+import {renderFilm} from './controller/page-controller.js';
+// import BoardController from './controller/page-controller.js';
 
 
 const FILMS_MAX_COUNT = 13;
@@ -30,7 +29,7 @@ const allFilmsQuantity = films.length;
 // ----------------- Get mains container -----------------------
 const siteMainElement = document.querySelector(`.main`);
 const siteHeaderElement = document.querySelector(`.header`);
-const siteFooterElement = document.querySelector(`.footer`);
+export const siteFooterElement = document.querySelector(`.footer`);
 
 
 // Профиль render
@@ -44,40 +43,6 @@ const watchlistFilmsCount = films.filter((item) => item.watchlist).length;
 const watchedFilmsCount = films.filter((item) => item.watched).length;
 const favoriteFilmsCount = films.filter((item) => item.favorite).length;
 render(siteMainElement, new FilterNavComponent(watchlistFilmsCount, watchedFilmsCount, favoriteFilmsCount).getElement());
-
-
-// ★ --------------- ф-ция рендера карточки фильма ---------- ★
-function renderFilm(filmsListElement, film) {
-
-  // Get компоненты в переменные
-  const filmCardComponent = new FilmCardComponent(film);
-  const popupComponent = new PopupComponent(film);
-  const commentsComponent = new CommentsComponent(film);
-
-  /* Добавляет после footer попап и комментарии */
-  const popupElement = popupComponent.getElement().querySelector(`.form-details__bottom-container`);
-  const popupOpenerClick = () => {
-    render(siteFooterElement, popupComponent.getElement(), RenderPosition.AFTEREND);
-    render(popupElement, commentsComponent.getElement());
-  };
-
-  /* Get обложка/заголовок/комментарий */
-  const posterElement = filmCardComponent.getElement().querySelector(`.film-card__poster`);
-  const titleElement = filmCardComponent.getElement().querySelector(`.film-card__title`);
-  const commentsElement = filmCardComponent.getElement().querySelector(`.film-card__comments`);
-  const popupOpen = [posterElement, titleElement, commentsElement];
-  for (const popupOpener of popupOpen) {
-    popupOpener.addEventListener(`click`, popupOpenerClick);
-  }
-
-  /* Get кнопка закрытия попапа */
-  const popupCloseBtnElement = popupComponent.getElement().querySelector(`.film-details__close-btn`);
-  popupCloseBtnElement.addEventListener(`click`, () => {
-    popupComponent.getElement().remove();
-  });
-
-  render(filmsListElement, filmCardComponent.getElement());
-}
 
 
 // ----------------- Get шаблон списка фильмов, render его в main
