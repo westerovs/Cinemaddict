@@ -58,6 +58,13 @@ const renderFilms = () => {
   for (const itemFilm of films.slice(SLICE_ELEMENT_INDEX, showingCardsMore)) {
     renderFilm(filmsListContainerElement, itemFilm);
   }
+
+  // проверка есть ли фильм, если нет то сообщение
+  if (films.length === 0) {
+    const listTitle = filmsListElement.querySelector(`.films-list__title`);
+    listTitle.classList.remove(`visually-hidden`);
+    listTitle.innerHTML = `There are no movies in our database`;
+  }
 };
 
 renderFilms();

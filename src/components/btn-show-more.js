@@ -11,4 +11,9 @@ export default class BtnShowMore extends AbstractComponent {
   getTemplate() {
     return createBtnShowMoreTemplate();
   }
+
+  // клик реализация паттерна оbserver
+  setClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
 }
