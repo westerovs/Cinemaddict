@@ -1,83 +1,44 @@
-import {formatTime} from "../utils/helpers";
-import SmartComponent from "./smart-component";
+import AbstractComponent from './abstract-component.js';
 
-export default class FilmCard extends SmartComponent {
+
+// ******************** шаблон фильма *********************
+const createFilmCardTemplate = (film) => {
+  const {poster, name, rating, year, time, genre, description, comments, watched, favorite, watchlist} = film;
+  return (
+    `<article class="film-card">
+    <h3 class="film-card__title">${name}</h3>
+       <p class="film-card__rating">${rating}</p>
+       <p class="film-card__info">
+         <span class="film-card__year">${year}</span>
+         <span class="film-card__duration">${time}</span>
+         <span class="film-card__genre">${genre}</span>
+       </p>
+       <img src="./images/posters/${poster}" alt="" class="film-card__poster">
+       <p class="film-card__description">
+        ${description}
+       </p>
+       <a class="film-card__comments">${comments} comments</a>
+       <form class="film-card__controls">
+         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
+         <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${watched ? `film-card__controls-item--active` : ``}">Mark as watched</button>
+         <button class="film-card__controls-item button film-card__controls-item--favorite ${favorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
+       </form>
+    </article>`
+  );
+};
+
+// класс наследуется от AпbstractComponent
+export default class FilmCardComponent extends AbstractComponent {
   constructor(film) {
+    // Ключевое слово super используется для вызова функций, принадлежащих родителю объекта.
+    // В конструкторе ключевое слово super() используется как функция, вызывающая родительский конструктор. Её необходимо вызвать до первого обращения к ключевому слову this в теле конструктора. Ключевое слово super также может быть использовано для вызова функций родительского объекта.
     super();
+
     this._film = film;
   }
 
-  getCardControlsTemplate() {
-    const film = this._film;
-
-    return `<form class="film-card__controls">
-      <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${film.isInWatchlist ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
-      <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${film.isWatched ? `film-card__controls-item--active` : ``}">Mark as watched</button>
-      <button class="film-card__controls-item button film-card__controls-item--favorite ${film.isFavorite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
-    </form>`;
-  }
-
+  // переопределяю метод getTemplate из интерфейса и говорю, что для film у меня метод getTemplate выглядит так
   getTemplate() {
-    const description = this._film.description.length > 139 ? this._film.description.substring(0, 139) + `...` : this._film.description;
-
-    return `<article class="film-card">
-    <h3 class="film-card__title">${this._film.title}</h3>
-    <p class="film-card__rating">${this._film.rating}</p>
-    <p class="film-card__info">
-      <span class="film-card__year">${this._film.year}</span>
-      <span class="film-card__duration">${formatTime(this._film.duration)}</span>
-      <span class="film-card__genre">${this._film.genres}</span>
-    </p>
-    <img src="./${this._film.poster}" alt="" class="film-card__poster">
-    <p class="film-card__description">${description}</p>
-    <a class="film-card__comments">${this._film.commentIds.length} comments</a>
-    ${this.getCardControlsTemplate()}
-  </article>`;
-  }
-
-  // Частичный перерендер элементов компонента, обладающего анимацией,
-  // чтобы не вызывать при вызове rerender() эту анимацию
-  rerender() {
-    this.getElement().querySelector(`.film-card__controls`).innerHTML = this.getCardControlsTemplate();
-    this.getElement().querySelector(`.film-card__comments`).textContent = `${this._film.commentIds.length} comments`;
-
-    this.recoverListeners();
-  }
-
-  set film(newFilm) {
-    this._film = newFilm;
-  }
-
-  onFilmClick(handler) {
-    this._onFilmClick = handler;
-    this.getElement().addEventListener(`click`, handler);
-  }
-
-  onAddToWatchlistClick(handler) {
-    this._onAddToWatchlistClick = handler;
-    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, handler);
-  }
-
-  onMarkAsWatchedClick(handler) {
-    this._onMarkAsWatchedClick = handler;
-    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, handler);
-  }
-
-  onFavoriteClick(handler) {
-    this._onFavoriteClick = handler;
-    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, handler);
-  }
-
-  recoverListeners() {
-    this._subscribeOnEvents();
-  }
-
-  _subscribeOnEvents() {
-    const element = this.getElement();
-
-    element.addEventListener(`click`, this._onFilmClick);
-    element.querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._onAddToWatchlistClick);
-    element.querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, this._onMarkAsWatchedClick);
-    element.querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, this._onFavoriteClick);
+    return createFilmCardTemplate(this._film);
   }
 }
