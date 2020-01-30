@@ -1,3 +1,5 @@
+// этот файл создан для  того чтобы  описать как таски между собой взаимодействуют, т.к хороший класс - описывает только одну задачу
+
 import FilmCardComponent from '../components/film-card.js';
 import PopupComponent from '../components/popup.js';
 import CommentsComponent from '../components/comments.js';

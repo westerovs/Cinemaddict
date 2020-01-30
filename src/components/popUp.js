@@ -99,4 +99,10 @@ export default class PopupFilmlComponent extends AbstractComponent {
   getTemplate() {
     return createPopupFilmlTemplate(this._film);
   }
+
+  //  Добавит метод установки обработчика submit формы
+  setSubmitHandler(handler) {
+    this.getElement().querySelector(`form`)
+      .addEventListener(`submit`, handler);
+  }
 }

@@ -1,3 +1,5 @@
+import {formatDuration, formatDate} from '../utils/common.js';
+
 // постеры
 const posters = [
   `made-for-each-other.png`,

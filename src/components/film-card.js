@@ -41,4 +41,11 @@ export default class FilmCardComponent extends AbstractComponent {
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
+
+  // ??? Добавит метод установки обработчика кнопки edit
+  // ??? клик реализация паттерна оbserver
+  // обработчик клика
+  setEditButtonClickHandler(handler) {
+    this.getElement().addEventListener(`click`, handler);
+  }
 }

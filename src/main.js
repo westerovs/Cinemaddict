@@ -12,6 +12,7 @@ import {renderFilm} from './controller/page-controller.js';
 
 
 const FILMS_MAX_COUNT = 13;
+
 const FILMS_SHOWING_ON_START = 5;
 const FILMS_SHOWING_BY_BUTTON = 5;
 const FILMS_EXTRA_COUNT = 2;
