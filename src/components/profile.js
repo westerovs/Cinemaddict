@@ -8,14 +8,15 @@ const RATINGNAMES = [
   `King`,
   `Gury`,
   `Expert`,
+  `Honorary man`,
   `Ninja`,
   `Master`,
   `Warrior`,
   `President`,
 ];
 
-
-const FILMS_RANK_STEP = 1;
+// шаг
+const FILMS_RANK_STEP = 10;
 
 // ф-ция присваивает рейтинг от 0 до длинны массива RATINGNAMES
 const getRank = (filmsCount = randomNumber(0, 10)) => {
@@ -36,7 +37,6 @@ const createProfileTemplate = () => {
   );
 };
 
-// класс который экспортируется из этого компонента по умолчанию
 export default class Profile extends AbstractComponent {
   getTemplate() {
     return createProfileTemplate();

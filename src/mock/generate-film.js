@@ -1,4 +1,4 @@
-import {formatDuration, formatDate} from '../utils/common.js';
+import {formatDuration, formatDate} from '../utils/moment.js';
 
 // постеры
 const posters = [

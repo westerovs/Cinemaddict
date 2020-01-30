@@ -8,10 +8,9 @@ import BtnShowMoreComponent from './components/btn-show-more.js';
 import {createRandomFilms} from './mock/generate-film.js';
 import {render} from './utils/render.js';
 import {renderFilm} from './controller/page-controller.js';
-// import BoardController from './controller/page-controller.js';
 
 
-const FILMS_MAX_COUNT = 13;
+const FUCKING_FILMS_MAX_COUNT = (555 + (777 - 111) + 343) + (73 * 6) - 1989;
 
 const FILMS_SHOWING_ON_START = 5;
 const FILMS_SHOWING_BY_BUTTON = 5;
@@ -22,7 +21,7 @@ let showingCardsMore = FILMS_SHOWING_ON_START;
 
 
 // ----------------- главный массив с фильмами -----------------
-const films = createRandomFilms(FILMS_MAX_COUNT);
+const films = createRandomFilms(FUCKING_FILMS_MAX_COUNT);
 // Get количество всех фильмов
 const allFilmsQuantity = films.length;
 
@@ -33,47 +32,39 @@ const siteHeaderElement = document.querySelector(`.header`);
 export const siteFooterElement = document.querySelector(`.footer`);
 
 
-// Профиль render
-render(siteHeaderElement, new ProfileComponent().getElement());
-// Cортировка render
-render(siteMainElement, new SortComponent().getElement());
-
-
-// ----------- filter * выбрынные/просмотренно/любимые ---------
-const watchlistFilmsCount = films.filter((item) => item.watchlist).length;
-const watchedFilmsCount = films.filter((item) => item.watched).length;
-const favoriteFilmsCount = films.filter((item) => item.favorite).length;
-render(siteMainElement, new FilterNavComponent(watchlistFilmsCount, watchedFilmsCount, favoriteFilmsCount).getElement());
-
-
 // ----------------- Get шаблон списка фильмов, render его в main
 const filmsListComponent = new FilmsListComponent();
+const filmsList = filmsListComponent.getElement().querySelector(`.films-list`);
+const filmsListContainerElement = filmsList.querySelector(`.films-list__container`);
+
+
+// ----------------- render ------------------------------------
+render(siteMainElement, new FilterNavComponent(films).getElement());
+render(siteHeaderElement, new ProfileComponent().getElement());
+render(siteMainElement, new SortComponent().getElement());
 render(siteMainElement, filmsListComponent.getElement());
-// Get элементы списка фильмов
-const filmsListElement = filmsListComponent.getElement().querySelector(`.films-list`);
-const filmsListContainerElement = filmsListElement.querySelector(`.films-list__container`);
 
 
-// ★ --------------- render фильмов в film-list ------------- ★
+// ★ --------------- renderFilms в film-list ---------------- ★
 const renderFilms = () => {
   for (const itemFilm of films.slice(SLICE_ELEMENT_INDEX, showingCardsMore)) {
     renderFilm(filmsListContainerElement, itemFilm);
   }
 
+
   // проверка есть ли фильм, если нет то сообщение
   if (films.length === 0) {
-    const listTitle = filmsListElement.querySelector(`.films-list__title`);
+    const listTitle = filmsList.querySelector(`.films-list__title`);
     listTitle.classList.remove(`visually-hidden`);
     listTitle.innerHTML = `There are no movies in our database`;
   }
 };
-
 renderFilms();
 
 
 // ★ --------------- remove фильмов из film-list ------------ ★
 const removeFilms = () => {
-  const filmElementsAll = filmsListElement.querySelectorAll(`.film-card`);
+  const filmElementsAll = filmsList.querySelectorAll(`.film-card`);
   filmElementsAll.forEach((film) => film.remove());
 };
 
@@ -147,10 +138,10 @@ for (const itemFilm of mostCommentFilms) {
 
 // ----------------- кнопка ShowMore ---------------------------
 const btnShowMoreElement = new BtnShowMoreComponent().getElement();
-render(filmsListElement, btnShowMoreElement);
+render(filmsList, btnShowMoreElement);
 
 // получаю компонент кнопки в переменную
-const btnShowMore = filmsListElement.querySelector(`.films-list__show-more`);
+const btnShowMore = filmsList.querySelector(`.films-list__show-more`);
 
 btnShowMore.onclick = () => {
   const addShowingCardsMore = showingCardsMore;
@@ -160,7 +151,7 @@ btnShowMore.onclick = () => {
     renderFilm(filmsListContainerElement, itemFilm);
   }
 
-  if (showingCardsMore >= FILMS_MAX_COUNT) {
+  if (showingCardsMore >= FUCKING_FILMS_MAX_COUNT) {
     btnShowMoreElement.remove();
   }
 };
@@ -172,11 +163,11 @@ footerStatisticsElement.textContent = `${allFilmsQuantity} movies inside`;
 
 
 // ----------------- ESK popUp ---------------------------------
-document.addEventListener(`keydown`, function (event) {
-  if (event.keyCode === 27) {
-    const popUp = document.querySelector(`.film-details`);
-    if (popUp) {
-      popUp.remove();
-    }
-  }
-});
+// document.addEventListener(`keydown`, function (event) {
+//   if (event.keyCode === 27) {
+//     const popUp = document.querySelector(`.film-details`);
+//     if (popUp) {
+//       popUp.remove();
+//     }
+//   }
+// });

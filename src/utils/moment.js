@@ -1,8 +1,10 @@
+// плагин moment.js
 import moment from 'moment';
 
 const MINUTES_IN_HOUR = 60;
 /* Наименьшее двузначное число */
 const DOUBLE_DIGIT = 10;
+
 
 /* Добавляет 0 в начало значения, если оно меньше 10 */
 const castMinutesFormat = (value) => value < DOUBLE_DIGIT ? `0${value}` : String(value);

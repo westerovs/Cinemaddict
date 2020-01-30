@@ -1,7 +1,8 @@
 import AbstractComponent from './abstract-component.js';
 
+const MAX_DESCRIPTION_SYMBOLS = 139;
+const makeShortDescription = (desc) => desc.slice(0, MAX_DESCRIPTION_SYMBOLS);
 
-// ******************** шаблон фильма *********************
 const createFilmCardTemplate = (film) => {
   const {poster, name, rating, year, time, genre, description, comments, watched, favorite, watchlist} = film;
   return (
@@ -15,7 +16,7 @@ const createFilmCardTemplate = (film) => {
        </p>
        <img src="./images/posters/${poster}" alt="" class="film-card__poster">
        <p class="film-card__description">
-        ${description}
+        ${makeShortDescription(description)}...
        </p>
        <a class="film-card__comments">${comments} comments</a>
        <form class="film-card__controls">
@@ -27,25 +28,26 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-// класс наследуется от AпbstractComponent
+
 export default class FilmCardComponent extends AbstractComponent {
   constructor(film) {
-    // Ключевое слово super используется для вызова функций, принадлежащих родителю объекта.
-    // В конструкторе ключевое слово super() используется как функция, вызывающая родительский конструктор. Её необходимо вызвать до первого обращения к ключевому слову this в теле конструктора. Ключевое слово super также может быть использовано для вызова функций родительского объекта.
     super();
-
     this._film = film;
   }
 
-  // переопределяю метод getTemplate из интерфейса и говорю, что для film у меня метод getTemplate выглядит так
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
 
-  // ??? Добавит метод установки обработчика кнопки edit
-  // ??? клик реализация паттерна оbserver
-  // обработчик клика
-  setEditButtonClickHandler(handler) {
-    this.getElement().addEventListener(`click`, handler);
+  setPosterClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, handler);
+  }
+
+  setTitleClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, handler);
+  }
+
+  setCommentsClickHandler(handler) {
+    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, handler);
   }
 }
