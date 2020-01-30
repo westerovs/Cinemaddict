@@ -161,13 +161,3 @@ btnShowMore.onclick = () => {
 const footerStatisticsElement = siteFooterElement.querySelector(`.footer__statistics p`);
 footerStatisticsElement.textContent = `${allFilmsQuantity} movies inside`;
 
-
-// ----------------- ESK popUp ---------------------------------
-// document.addEventListener(`keydown`, function (event) {
-//   if (event.keyCode === 27) {
-//     const popUp = document.querySelector(`.film-details`);
-//     if (popUp) {
-//       popUp.remove();
-//     }
-//   }
-// });

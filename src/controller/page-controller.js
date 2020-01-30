@@ -1,11 +1,12 @@
 // этот файл создан для  того чтобы  описать как таски между собой взаимодействуют, т.к хороший класс - описывает только одну задачу
 
 import FilmCardComponent from '../components/film-card.js';
+import BtnShowMoreComponent from '../components/btn-show-more.js';
 import PopupComponent from '../components/popup.js';
 // import CommentsComponent from '../components/comments.js';
 import {render, RenderPosition, remove} from '../utils/render.js';
 import {siteFooterElement} from '../main.js';
-import {isEscEvent} from '../utils/utils.js';
+import {escKeycode} from '../utils/utils.js';
 
 
 // ★ --------------- ф-ция рендера карточки фильма ---------- ★
@@ -15,64 +16,26 @@ export function renderFilm(filmsListElement, film) {
   const popupComponent = new PopupComponent(film);
 
 
-  const onPopupEscPress = (evt) => isEscEvent(evt) ? remove(popupComponent) : ``;
+  const escPress = (evt) => escKeycode(evt) ? remove(popupComponent) : ``;
 
-  filmCardComponent.setPosterClickHandler(() => {
-    document.addEventListener(`keydown`, onPopupEscPress);
+  function renderPopup() {
+    document.addEventListener(`keydown`, escPress);
     render(siteFooterElement, popupComponent, RenderPosition.AFTEREND);
-  });
-  filmCardComponent.setTitleClickHandler(() => {
-    document.addEventListener(`keydown`, onPopupEscPress);
-    render(siteFooterElement, popupComponent, RenderPosition.AFTEREND);
-  });
-  filmCardComponent.setCommentsClickHandler(() => {
-    document.addEventListener(`keydown`, onPopupEscPress);
-    render(siteFooterElement, popupComponent, RenderPosition.AFTEREND);
-  });
+  }
 
-  popupComponent.setBtnCloseClickHandler(() => remove(popupComponent));
+  filmCardComponent.setPosterClickHandler(() => renderPopup());
+  filmCardComponent.setPosterClickHandler(() => renderPopup());
+  filmCardComponent.setCommentsClickHandler(() => renderPopup());
+
+  popupComponent.btnClose(() => remove(popupComponent));
 
   return render(filmsListElement, filmCardComponent.getElement());
 }
 
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ -------------------------------------------------------- ★
-// ★ --------------- ф-ция рендера карточки фильма ---------- ★
-// export function renderFilm(filmsListElement, film) {
 
-//   const filmCardComponent = new FilmCardComponent(film);
-//   const popupComponent = new PopupComponent(film);
-//   const commentsComponent = new CommentsComponent(film);
-
-//   /* Добавляет после footer попап и комментарии */
-//   const popupElement = popupComponent.getElement().querySelector(`.form-details__bottom-container`);
-//   const popupOpenerClick = () => {
-//     render(siteFooterElement, popupComponent.getElement(), RenderPosition.AFTEREND);
-//     render(popupElement, commentsComponent.getElement());
-//   };
-
-//   /* Get обложка/заголовок/комментарий */
-//   const posterElement = filmCardComponent.getElement().querySelector(`.film-card__poster`);
-//   const titleElement = filmCardComponent.getElement().querySelector(`.film-card__title`);
-//   const commentsElement = filmCardComponent.getElement().querySelector(`.film-card__comments`);
-//   const popupOpen = [posterElement, titleElement, commentsElement];
-//   for (const popupOpener of popupOpen) {
-//     popupOpener.addEventListener(`click`, popupOpenerClick);
-//   }
-
-//   /* Get кнопка закрытия попапа */
-//   const popupCloseBtnElement = popupComponent.getElement().querySelector(`.film-details__close-btn`);
-//   popupCloseBtnElement.addEventListener(`click`, () => {
-//     popupComponent.getElement().remove();
-//   });
-
-//   render(filmsListElement, filmCardComponent.getElement());
-// }
+export default class PageController {
+  constructor(container) {
+    this._container = container;
+    this._showMoreComponent = new BtnShowMoreComponent();
+  }
+}

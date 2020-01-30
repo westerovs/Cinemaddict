@@ -6,7 +6,7 @@ export const createElement = (template) => {
 };
 
 
-export const isEscEvent = (evt) => {
+export const escKeycode = (evt) => {
   const ESC_KEYCODE = 27;
   return evt.keyCode === ESC_KEYCODE;
 };
