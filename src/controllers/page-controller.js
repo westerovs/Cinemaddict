@@ -1,58 +1,3 @@
-import BtnShowMoreComponent from '../components/btn-show-more.js';
-import {render} from '../utils/render.js';
-
-// ★ --------------- контроллер ----------------------------- ★
-export default class PageController {
-  constructor(container) {
-    this._container = container;
-
-    this._showMoreComponent = new BtnShowMoreComponent();
-  }
-
-  render() {
-    render(this._container.getElement(), this._showMoreComponent);
-  }
-
-  test() {
-    console.log(`test`);
-  }
-
-}
-
-
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
 // // Создайте класс PageController:
 
 // // В нем нужно описать конструктор и метод render;
@@ -62,89 +7,75 @@ export default class PageController {
 // // В качестве аргументов метод render должен принимать данные для отрисовки — карточки фильмов.
 
 // // В main.js создайте инстанс PageController, а затем вызовите у него метод render передав в него все сгенерированные карточки фильмов.
+
+
 // import FilmListComponent from '../components/film-list.js';
-// import FilmCardComponent from '../components/film-card.js';
 // import BtnShowMoreComponent from '../components/btn-show-more.js';
-// import PopupComponent from '../components/popup.js';
 // // import CommentsComponent from '../components/comments.js';
-// import {render, RenderPosition, remove} from '../utils/render.js';
-// import {siteFooterElement} from '../main.js';
-// import {escKeycode} from '../utils/utils.js';
+import FilmCardComponent from '../components/film-card.js';
+import PopupComponent from '../components/popup.js';
+import {render, RenderPosition, remove} from '../utils/render.js';
+import {siteFooterElement} from '../main.js';
+import {escKeycode} from '../utils/utils.js';
+import BtnShowMoreComponent from '../components/btn-show-more.js';
 
 
-// // const FILMS_SHOWING_ON_START = 5;
-// // const FILMS_SHOWING_BY_BUTTON = 5;
-// // const FILMS_EXTRA_COUNT = 2;
-// // const SLICE_ELEMENT_INDEX = 0;
-// // // количество показываемых карточек
-// // let showingCardsMore = FILMS_SHOWING_ON_START;
+const FILMS_SHOWING_ON_START = 5;
+const FILMS_SHOWING_BY_BUTTON = 5;
+const FILMS_EXTRA_COUNT = 2;
+const SLICE_ELEMENT_INDEX = 0;
+// количество показываемых карточек
+let showingCardsMore = FILMS_SHOWING_ON_START;
 
 
 // // ★ --------------- ф-ция рендера карточки фильма ---------- ★
-// export function renderFilm(filmsListElement, film) {
+export function renderFilms(filmsListElement, film) {
 
-//   const filmCardComponent = new FilmCardComponent(film);
-//   const popupComponent = new PopupComponent(film);
-
-
-//   const escPress = (evt) => escKeycode(evt) ? remove(popupComponent) : ``;
-
-//   function renderPopup() {
-//     document.addEventListener(`keydown`, escPress);
-//     render(siteFooterElement, popupComponent, RenderPosition.AFTEREND);
-//   }
-
-//   filmCardComponent.setPosterClickHandler(() => renderPopup());
-//   filmCardComponent.setPosterClickHandler(() => renderPopup());
-//   filmCardComponent.setCommentsClickHandler(() => renderPopup());
-
-//   popupComponent.btnClose(() => remove(popupComponent));
-
-//   return render(filmsListElement, filmCardComponent.getElement());
-// }
-
-// // renderBtn() {
-// //   const filmsListComponent = new FilmListComponent();
-// //   const filmsList = filmsListComponent.getElement().querySelector(`.films-list`);
-// //   render(siteMainElement, filmsListComponent.getElement());
+  const filmCardComponent = new FilmCardComponent(film);
+  const popupComponent = new PopupComponent(film);
 
 
-// // ★ --------------- контроллер ----------------------------- ★
+  const escPress = (evt) => escKeycode(evt) ? remove(popupComponent) : ``;
 
-// export default class PageController {
-//   constructor(container) {
-//     this._container = container;
+  function renderPopup() {
+    document.addEventListener(`keydown`, escPress);
+    render(siteFooterElement, popupComponent, RenderPosition.AFTEREND);
+  }
 
-//     this._filmListComponent = new FilmListComponent();
-//     this._showMoreComponent = new BtnShowMoreComponent();
-//   }
+  filmCardComponent.setPosterClickHandler(() => renderPopup());
+  filmCardComponent.setPosterClickHandler(() => renderPopup());
+  filmCardComponent.setCommentsClickHandler(() => renderPopup());
 
-//   render(films) {
+  popupComponent.btnClose(() => remove(popupComponent));
 
-//   }
-
-//   test() {
-//     console.log(`test`);
-//   }
-// }
+  return render(filmsListElement, filmCardComponent);
+}
 
 
-// // // ----------------- кнопка ShowMore ---------------------------
-// // const btnShowMoreElement = new BtnShowMoreComponent().getElement();
-// // render(filmsList, btnShowMoreElement);
+// ★ --------------- контроллер ----------------------------- ★
+export default class PageController {
+  constructor(container) {
+    this._container = container;
 
-// // // получаю компонент кнопки в переменную
-// // const btnShowMore = filmsList.querySelector(`.films-list__show-more`);
+    this._showMoreComponent = new BtnShowMoreComponent();
+  }
 
-// // btnShowMore.onclick = () => {
-// //   const addShowingCardsMore = showingCardsMore;
-// //   showingCardsMore += FILMS_SHOWING_BY_BUTTON;
+  render(films) {
 
-// //   for (const itemFilm of films.slice(addShowingCardsMore, showingCardsMore)) {
-// //     renderFilm(filmsListContainerElement, itemFilm);
-// //   }
+    // вставить кнопку
+    const filmsListElement = this._container
+      .getElement().querySelector(`.films-list`);
+    render(filmsListElement, this._showMoreComponent);
 
-// //   if (showingCardsMore >= FUCKING_FILMS_MAX_COUNT) {
-// //     btnShowMoreElement.remove();
-// //   }
-// // };
+
+    // вставить карточки
+    const filmsListContainerElement = this._container
+       .getElement().querySelector(`.films-list__container`);
+
+    films.slice(SLICE_ELEMENT_INDEX, showingCardsMore)
+      .forEach((film) => renderFilms(filmsListContainerElement, film));
+
+
+  }
+
+}

@@ -1,73 +1,18 @@
-import FilmListComponent from './components/film-list.js';
-import PageControllerComponent from './controllers/page-controller.js';
-import {render} from './utils/render.js';
-
-
-const siteMainElement = document.querySelector(`.main`);
-const filmsListComponent = new FilmListComponent();
-
-render(siteMainElement, filmsListComponent);
-
-
-const pageControllerComponent = new PageControllerComponent(filmsListComponent);
-pageControllerComponent.test();
-pageControllerComponent.render();
-
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// /
-// // ----------------------- Component --------------------------
+// ----------------------- Component --------------------------
 // import ProfileComponent from './components/profile.js';
 // import FilterNavComponent from './components/filter-nav.js';
 // import SortComponent from './components/sort.js';
 // import FilmsListComponent from './components/film-list.js';
 // import BtnShowMoreComponent from './components/btn-show-more.js';
 // // outher
-// import {createRandomFilms} from './mock/generate-film.js';
+import {createRandomFilms} from './mock/generate-film.js';
 // import {render} from './utils/render.js';
 // import {renderFilm} from './controller/page-controller.js';
+import FilmListComponent from './components/film-list.js';
+import PageControllerComponent from './controllers/page-controller.js';
+import {render, RenderPosition, remove} from './utils/render.js';
 
-
-// const FUCKING_FILMS_MAX_COUNT = (555 + (777 - 111) + 343) + (73 * 6) - 1989;
+const FUCKING_FILMS_MAX_COUNT = (555 + (777 - 111) + 343) + (73 * 6) - 1989;
 
 // const FILMS_SHOWING_ON_START = 5;
 // const FILMS_SHOWING_BY_BUTTON = 5;
@@ -78,15 +23,25 @@ pageControllerComponent.render();
 
 
 // // ----------------- главный массив с фильмами -----------------
-// const films = createRandomFilms(FUCKING_FILMS_MAX_COUNT);
+const films = createRandomFilms(FUCKING_FILMS_MAX_COUNT);
 // // Get количество всех фильмов
 // const allFilmsQuantity = films.length;
 
 
 // // ----------------- Get mains container -----------------------
-// const siteMainElement = document.querySelector(`.main`);
-// const siteHeaderElement = document.querySelector(`.header`);
+const siteMainElement = document.querySelector(`.main`);
+const siteHeaderElement = document.querySelector(`.header`);
 // export const siteFooterElement = document.querySelector(`.footer`);
+
+
+const filmsListComponent = new FilmListComponent();
+
+
+render(siteMainElement, filmsListComponent);
+
+
+const pageControllerComponent = new PageControllerComponent(filmsListComponent);
+pageControllerComponent.render(films);
 
 
 // // ----------------- Get шаблон списка фильмов, render его в main
@@ -104,8 +59,8 @@ pageControllerComponent.render();
 
 // // ★ --------------- renderFilms в film-list ---------------- ★
 // const renderFilms = () => {
-//   for (const itemFilm of films.slice(SLICE_ELEMENT_INDEX, showingCardsMore)) {
-//     renderFilm(filmsListContainerElement, itemFilm);
+//   for (const itemFilm of films.slice(0, 5)) {
+//     renderFilms(filmsListContainerElement, itemFilm);
 //   }
 
 
@@ -116,7 +71,6 @@ pageControllerComponent.render();
 //     listTitle.innerHTML = `There are no movies in our database`;
 //   }
 // };
-// renderFilms();
 
 
 // // ★ --------------- remove фильмов из film-list ------------ ★
