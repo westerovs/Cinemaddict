@@ -16,6 +16,27 @@
   --font-size-bigger: 20px;
 }
 
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
 
 html {
   background: #121213 url('../images/background.png') no-repeat 60% 0;
@@ -320,7 +341,6 @@ button {
 .film-card__rating {
   display: inline;
   font-weight: 700;
-  cursor: pointer;
 }
 
 .film-card__title {
@@ -353,7 +373,6 @@ button {
   position: absolute;
   transition: bottom 0.2s ease-out;
   width: 100%;
-  cursor: pointer;
   z-index: 1;
 }
 
@@ -535,7 +554,7 @@ button {
   left: 10%;
   z-index: 1;
   background-color: #212126;
-  animation: bounceInRight 0.3s;
+  /* animation: bounceInRight 0.3s; */
   box-shadow: -3px 2px 13px 0 #141628;
   overflow-x: hidden;
   overflow-y: auto;
@@ -1077,4 +1096,27 @@ button {
   min-height: 300px;
   padding-top: 50px;
   padding-bottom: 50px;
+}
+
+.shake {
+  animation: shake 0.6s;
+}
+
+.film-details__comment-input:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.film-card__controls-item:disabled {
+  cursor: progress;
+}
+
+.film-details__user-rating-input:disabled + label {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.film-details__comment-delete:disabled {
+  cursor: default;
+  opacity: 0.7;
 }
