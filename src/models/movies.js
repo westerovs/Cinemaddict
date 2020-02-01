@@ -1,81 +1,80 @@
-import {FilterTypes} from "../utils/const";
-import {SortType} from "../components/sort";
-import {getFilmsByFilter} from "../utils/filter";
-import {getSortedFilms} from "../utils/sort";
+import {getFilmsByFilter} from '../utils/filter';
+import {FilterType} from '../const';
+
 
 export default class Movies {
   constructor() {
-    this._filmList = [];
-    this._activeFilterType = FilterTypes.DEFAULT;
-    this._activeSortType = SortType.DEFAULT;
-    this._filterChangeHandlers = [];
+    this._movies = [];
+    this._activeFilterType = FilterType.ALL;
+
     this._dataChangeHandlers = [];
+
+    this._filterChangeHandlers = [];
   }
 
-  get filmListDefault() {
-    return this._filmList;
+  getMovies() {
+    return getFilmsByFilter(this._movies, this._activeFilterType);
   }
 
-  set filmList(filmList) {
-    this._filmList = Array.from(filmList);
+  getMoviesByFilter(filterType) {
+    return getFilmsByFilter(this._movies, filterType);
   }
 
-  get sortType() {
-    return this._activeSortType;
+  getMoviesAll() {
+    return this._movies;
   }
 
-  get filterType() {
-    return this._activeFilterType;
-  }
-
-  set sortType(type) {
-    this._activeSortType = type;
-  }
-
-  getFilmList() {
-    let filmList = this._filmList;
-
-    if (this._activeFilterType !== FilterTypes.DEFAULT) {
-      filmList = getFilmsByFilter(this._filmList, this._activeFilterType);
-    }
-
-    if (this._activeSortType !== SortType.DEFAULT) {
-      filmList = getSortedFilms(filmList, this._activeSortType);
-    }
-
-    return filmList;
-  }
-
-  updateFilm(id, film) {
-    const index = this._filmList.findIndex((it) => it.id === id);
-
-    if (index !== -1) {
-      this._filmList[index] = film;
-      this._dataChangeHandlers.forEach((handler) => handler());
-
-      // Удаляем последний добавленный обработчик для конкретного контроллера фильма,
-      // чтобы не вызывать его при каждом обновлении данных
-      this._dataChangeHandlers.pop();
-      return true;
-    }
-
-    return false;
-  }
-
-  setComments(movieId, comments) {
-    this._filmList.find((film) => film.id === movieId).comments = comments;
+  setMovies(movies) {
+    this._movies = Array.from(movies);
+    this._callHandlers(this._dataChangeHandlers);
   }
 
   setFilter(filterType) {
     this._activeFilterType = filterType;
-    this._filterChangeHandlers.forEach((handler) => handler());
+    this._callHandlers(this._filterChangeHandlers);
   }
 
-  onFilterChange(handler) {
+  updateMovie(id, movie) {
+    const index = this._movies.findIndex((it) => it.id === id);
+
+    if (index === -1) {
+      return false;
+    }
+
+    this._movies = [].concat(this._movies.slice(0, index), movie, this._movies.slice(index + 1));
+
+    this._callHandlers(this._dataChangeHandlers);
+
+    return true;
+  }
+
+  setFilterChangeHandler(handler) {
     this._filterChangeHandlers.push(handler);
   }
 
-  onDataChange(handler) {
+  setDataChangeHandler(handler) {
     this._dataChangeHandlers.push(handler);
+  }
+
+  hasRatings() {
+    return this._movies.some((movie) => !!movie.filmInfo.totalRating);
+  }
+
+  hasComments() {
+    return this._movies.some(({comments}) => !!comments.length);
+  }
+
+  getSortedMoviesByRating() {
+    return this._movies.slice().sort((a, b) => {
+      return b.filmInfo.totalRating - a.filmInfo.totalRating;
+    });
+  }
+
+  getSortedMoviesByCommentsCount() {
+    return this._movies.slice().sort((a, b) => b.comments.length - a.comments.length);
+  }
+
+  _callHandlers(handlers) {
+    handlers.forEach((handler) => handler());
   }
 }

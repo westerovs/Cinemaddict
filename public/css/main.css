@@ -16,6 +16,27 @@
   --font-size-bigger: 20px;
 }
 
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
 
 html {
   background: #121213 url('../images/background.png') no-repeat 60% 0;
@@ -172,7 +193,7 @@ button {
   position: absolute;
   top: 50%;
   left: 19%;
-    
+
   width: 20px;
   height: 1px;
 
@@ -266,7 +287,7 @@ button {
   margin-right: 32px;
   padding: 0;
 
-  color: #ffffff;  
+  color: #ffffff;
   text-decoration: none;
 
   background-color: transparent;
@@ -281,7 +302,7 @@ button {
 }
 
 .sort__button--active {
-  color: #ffe800;  
+  color: #ffe800;
 }
 
 .films {
@@ -533,7 +554,7 @@ button {
   left: 10%;
   z-index: 1;
   background-color: #212126;
-  animation: bounceInRight 0.3s;
+  /* animation: bounceInRight 0.3s; */
   box-shadow: -3px 2px 13px 0 #141628;
   overflow-x: hidden;
   overflow-y: auto;
@@ -997,7 +1018,7 @@ button {
 }
 .statistic__rank {
   display: flex;
-  align-items: center; 
+  align-items: center;
   margin: 0;
   margin-bottom: 34px;
   font-size: 50px;
@@ -1075,4 +1096,27 @@ button {
   min-height: 300px;
   padding-top: 50px;
   padding-bottom: 50px;
+}
+
+.shake {
+  animation: shake 0.6s;
+}
+
+.film-details__comment-input:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.film-card__controls-item:disabled {
+  cursor: progress;
+}
+
+.film-details__user-rating-input:disabled + label {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.film-details__comment-delete:disabled {
+  cursor: default;
+  opacity: 0.7;
 }

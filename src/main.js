@@ -1,43 +1,105 @@
-import ProfileRatingComponent from "./components/profile-rating";
-import {checkForActiveState} from "./utils/helpers";
-import {render} from "./utils/render";
-import PageController from "./controllers/page";
-import MoviesModel from "./models/movies";
-import MenuController from "./controllers/menu";
-import API from "./api";
+import Api from './api/index';
+import Store from './api/store';
+import Provider from './api/provider';
+import UserRankController from './controllers/user-rank';
+import FilterController from './controllers/filter';
+import SortComponent from './components/sort';
+import FilmsComponent from './components/films';
+import FilmsListComponent from './components/films-list';
+import FilmListTitleController from './controllers/film-list-title';
+import StatsController from './controllers/stats';
+import MoviesModel from './models/movies';
+import PageController from './controllers/page';
+import {RenderPosition, render} from './utils/render';
+import {statsPeriods} from './const';
 
-const mainContainer = document.querySelector(`.main`);
-const headerContainer = document.querySelector(`.header`);
 
+const STORE_MOVIES_NAME = `cinemaddict-movies-localstorage-v1`;
+const STORE_COMMENTS_NAME = `cinemaddict-comments-localstorage-v1`;
+const AUTHORIZATION = `Basic mJ7UKvlNLEru54N`;
+const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
+
+window.addEventListener(`load`, () => {
+  navigator.serviceWorker.register(`/sw.js`)
+    .then(() => {
+      // Действие, в случае успешной регистрации ServiceWorker
+    }).catch(() => {
+      // Действие, в случае ошибки при регистрации ServiceWorker
+    });
+});
+
+const api = new Api(END_POINT, AUTHORIZATION);
+const storeMovies = new Store(STORE_MOVIES_NAME, window.localStorage);
+const storeComments = new Store(STORE_COMMENTS_NAME, window.localStorage);
+const apiWithProvider = new Provider(api, storeMovies, storeComments);
 const moviesModel = new MoviesModel();
 
-const menuController = new MenuController(mainContainer, moviesModel);
-menuController.render();
+const headerElement = document.querySelector(`.header`);
+const mainElement = document.querySelector(`.main`);
+const footerStatisticsElement = document.querySelector(`.footer__statistics p`);
 
-const menuComponent = menuController.component;
+const filmsComponent = new FilmsComponent();
+const sortComponent = new SortComponent();
 
-menuComponent.onMenuItemClick((evt) => {
-  if (checkForActiveState(evt.target) && !evt.target.classList.contains(`main-navigation__item--additional`)) {
-    const filterType = evt.target.dataset.filterType ? evt.target.dataset.filterType : evt.target.parentNode.dataset.filterType;
+const userRankController = new UserRankController(headerElement, moviesModel);
+const pageController = new PageController(filmsComponent, sortComponent, moviesModel, apiWithProvider);
+const statsController = new StatsController(mainElement, moviesModel, statsPeriods.ALL_TIME);
+const filterController = new FilterController(mainElement, moviesModel, pageController, sortComponent, statsController);
 
-    page.showFilmsPage();
+userRankController.render();
+filterController.render();
+statsController.render();
+statsController.hide();
 
-    moviesModel.setFilter(filterType);
-    menuComponent.currentFilterType = filterType;
-  } else if (evt.target.classList.contains(`main-navigation__item--additional`)) {
-    page.showStatPage();
+render(mainElement, sortComponent, RenderPosition.BEFOREEND);
+render(mainElement, filmsComponent, RenderPosition.BEFOREEND);
+
+const filmsElement = mainElement.querySelector(`.films`);
+
+render(filmsElement, new FilmsListComponent(), RenderPosition.BEFOREEND);
+
+const filmsListElement = filmsElement.querySelector(`.films-list`);
+
+const filmListTitleController = new FilmListTitleController(filmsListElement, moviesModel);
+
+filmListTitleController.render();
+
+
+apiWithProvider.getMovies()
+  .then((movies) => {
+
+    const commentsPromises = movies.map((movie) => {
+      return apiWithProvider.getComments(movie.id).then((comments) => {
+        movie.comments = comments;
+      });
+    });
+
+    Promise.all(commentsPromises).then(() => {
+      moviesModel.setMovies(movies);
+
+      pageController.render();
+      pageController.renderTopRatedList();
+      pageController.renderMostCommentedList();
+
+      footerStatisticsElement.textContent = `${movies.length} movies inside`;
+    });
+  });
+
+
+window.addEventListener(`online`, () => {
+  document.title = document.title.replace(` [offline]`, ``);
+
+  if (!apiWithProvider.getSynchronize()) {
+    apiWithProvider.sync()
+      .then(() => {
+        // Действие, в случае успешной синхронизации
+      })
+      .catch(() => {
+        // Действие, в случае ошибки синхронизации
+      });
   }
 });
 
-const api = new API();
-const page = new PageController(mainContainer, moviesModel);
-
-api.getMovies()
-  .then((data) => {
-    moviesModel.filmList = data;
-    menuController.updateComponent();
-    render(headerContainer, new ProfileRatingComponent(
-        moviesModel.filmListDefault.filter((film) => film.isWatched).length
-    ));
-    page.render();
-  });
+window.addEventListener(`offline`, () => {
+  document.title += ` [offline]`;
+});

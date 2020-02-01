@@ -1,21 +1,27 @@
-import {FilterTypes} from "./const";
+import {FilterType} from '../const';
 
-export const getFilmsByFilter = (filmList, filterType) => {
-  let result = [];
 
+const getWatchlistFilms = (films) => films.filter((film) => film.isInWatchlist);
+const getWatchedFilms = (films) => films.filter((film) => film.isWatched);
+const getFavoritesFilms = (films) => films.filter((film) => film.isFavorite);
+
+const getFilmsByFilter = (films, filterType) => {
   switch (filterType) {
-    case FilterTypes.DEFAULT:
-      result = filmList;
-      break;
-    case FilterTypes.FAVORITES:
-      result = filmList.filter((film) => film.isFavorite);
-      break;
-    case FilterTypes.HISTORY:
-      result = filmList.filter((film) => film.isWatched);
-      break;
-    case FilterTypes.WATCHLIST:
-      result = filmList.filter((film) => film.isInWatchlist);
+    case FilterType.WATCHLIST:
+      return getWatchlistFilms(films);
+    case FilterType.HISTORY:
+      return getWatchedFilms(films);
+    case FilterType.FAVORITES:
+      return getFavoritesFilms(films);
   }
 
-  return result;
+  return films;
+};
+
+
+export {
+  getWatchlistFilms,
+  getWatchedFilms,
+  getFavoritesFilms,
+  getFilmsByFilter,
 };

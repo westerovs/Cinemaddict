@@ -1,11 +1,25 @@
 export default class Comment {
-  constructor(comment, emotion, id) {
-    this.comment = comment;
-    this.date = new Date().toISOString();
-    this.emotion = emotion;
+  constructor(data) {
+    this.id = data[`id`];
+    this.author = data[`author`];
+    this.text = data[`comment`];
+    this.date = new Date(data[`date`]);
+    this.emotion = data[`emotion`];
+  }
 
-    if (id) {
-      this.id = id;
-    }
+  toRAW() {
+    return {
+      'comment': this.text,
+      'date': this.date.toISOString(),
+      'emotion': this.emotion,
+    };
+  }
+
+  static parseComment(data) {
+    return new Comment(data);
+  }
+
+  static parseComments(data) {
+    return data.map(Comment.parseComment);
   }
 }
