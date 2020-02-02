@@ -1,6 +1,6 @@
 import debounce from 'lodash/debounce';
 import AbstractSmartComponent from './abstract-smart-component';
-import {Emotions} from '../const';
+import {EMOTIONS} from '../const';
 import {
   formatDuration,
   formatDate,
@@ -70,7 +70,7 @@ const createCommentsListMarkup = (comments) => comments
   })
   .join(`\n`);
 
-const createEmojiMarkup = (activeEmotion) => Emotions
+const createEmojiMarkup = (activeEmotion) => EMOTIONS
   .map((emotion) => {
     return `<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emotion}" value="${emotion}" ${emotion === activeEmotion ? `checked` : ``}>
     <label class="film-details__emoji-label" for="emoji-${emotion}">

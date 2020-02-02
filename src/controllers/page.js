@@ -7,9 +7,11 @@ import {renderFilms} from './../utils/render-films';
 import {SortType} from './../components/sort';
 
 
-const SHOWING_FILM_CARD_COUNT_ON_START = 5;
-const SHOWING_FILM_CARD_COUNT_BY_BUTTON = 5;
-const SHOWING_FILM_CARD_COUNT_BY_EXTRA = 2;
+const FilmsConter = {
+  SHOWING_FILM_CARD_COUNT_ON_START: 5,
+  SHOWING_FILM_CARD_COUNT_BY_BUTTON: 5,
+  SHOWING_FILM_CARD_COUNT_BY_EXTRA: 2,
+};
 
 
 export default class PageController {
@@ -21,7 +23,7 @@ export default class PageController {
 
     this._films = [];
     this._allFilmsControllers = [];
-    this._showingFilmCardCountByButton = SHOWING_FILM_CARD_COUNT_BY_BUTTON;
+    this._showingFilmCardCountByButton = FilmsConter.SHOWING_FILM_CARD_COUNT_BY_BUTTON;
 
     this._filmListContainerComponent = new FilmListContainerComponent();
     this._loadMoreButtonComponent = new LoadMoreButtonComponent();
@@ -79,7 +81,7 @@ export default class PageController {
       const topRatedContainerElements = this._filmsListTopRatedComponent.getElement().querySelector(`.films-list__container`
       );
 
-      this._renderFilms(topRatedContainerElements, sortedFilms.slice(0, SHOWING_FILM_CARD_COUNT_BY_EXTRA));
+      this._renderFilms(topRatedContainerElements, sortedFilms.slice(0, FilmsConter.SHOWING_FILM_CARD_COUNT_BY_EXTRA));
     }
   }
 
@@ -100,7 +102,7 @@ export default class PageController {
 
       const mostCommentedContainerElements = this._filmsListMostCommentedComponent.getElement().querySelector(`.films-list__container`);
 
-      this._renderFilms(mostCommentedContainerElements, sortedFilms.slice(0, SHOWING_FILM_CARD_COUNT_BY_EXTRA));
+      this._renderFilms(mostCommentedContainerElements, sortedFilms.slice(0, FilmsConter.SHOWING_FILM_CARD_COUNT_BY_EXTRA));
     }
   }
 
@@ -132,7 +134,7 @@ export default class PageController {
 
     this._loadMoreButtonComponent.setClickHandler(() => {
       const prevFilmCardsCount = this._showingFilmCardCountByButton;
-      this._showingFilmCardCountByButton += SHOWING_FILM_CARD_COUNT_BY_BUTTON;
+      this._showingFilmCardCountByButton += FilmsConter.SHOWING_FILM_CARD_COUNT_BY_BUTTON;
 
       this._renderFilms(filmsListContainerElement, films.slice(prevFilmCardsCount, this._showingFilmCardCountByButton));
 
@@ -190,7 +192,7 @@ export default class PageController {
 
     const filmsListContainerElement = this._filmListContainerComponent.getElement();
 
-    this._showingFilmCardCountByButton = SHOWING_FILM_CARD_COUNT_ON_START;
+    this._showingFilmCardCountByButton = FilmsConter.SHOWING_FILM_CARD_COUNT_ON_START;
 
     this._removeFilms();
     this._renderFilms(filmsListContainerElement, sortedFilms.slice(0, this._showingFilmCardCountByButton));
@@ -201,10 +203,10 @@ export default class PageController {
     const filmsListContainerElement = this._filmListContainerComponent.getElement();
     const films = this._moviesModel.getMovies();
 
-    this._showingFilmCardCountByButton = SHOWING_FILM_CARD_COUNT_ON_START;
+    this._showingFilmCardCountByButton = FilmsConter.SHOWING_FILM_CARD_COUNT_ON_START;
 
     this._removeFilms();
-    this._renderFilms(filmsListContainerElement, films.slice(0, SHOWING_FILM_CARD_COUNT_ON_START));
+    this._renderFilms(filmsListContainerElement, films.slice(0, FilmsConter.SHOWING_FILM_CARD_COUNT_ON_START));
     this._renderLoadMoreButton(films);
   }
 }

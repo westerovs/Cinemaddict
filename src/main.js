@@ -11,7 +11,7 @@ import StatsController from './controllers/stats';
 import MoviesModel from './models/movies';
 import PageController from './controllers/page';
 import {RenderPosition, render} from './utils/render';
-import {statsPeriods} from './const';
+import {StatPeriod} from './const';
 
 
 const STORE_MOVIES_NAME = `cinemaddict-movies-localstorage-v1`;
@@ -44,7 +44,7 @@ const sortComponent = new SortComponent();
 
 const userRankController = new UserRankController(headerElement, moviesModel);
 const pageController = new PageController(filmsComponent, sortComponent, moviesModel, apiWithProvider);
-const statsController = new StatsController(mainElement, moviesModel, statsPeriods.ALL_TIME);
+const statsController = new StatsController(mainElement, moviesModel, StatPeriod.ALL_TIME);
 const filterController = new FilterController(mainElement, moviesModel, pageController, sortComponent, statsController);
 
 userRankController.render();
@@ -69,13 +69,13 @@ filmListTitleController.render();
 apiWithProvider.getMovies()
   .then((movies) => {
 
-    const commentsPromises = movies.map((movie) => {
+    const commentsObject = movies.map((movie) => {
       return apiWithProvider.getComments(movie.id).then((comments) => {
         movie.comments = comments;
       });
     });
 
-    Promise.all(commentsPromises).then(() => {
+    Promise.all(commentsObject).then(() => {
       moviesModel.setMovies(movies);
 
       pageController.render();

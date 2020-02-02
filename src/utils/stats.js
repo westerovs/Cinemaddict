@@ -1,34 +1,34 @@
-import {statsPeriods} from '../const';
+import {StatPeriod} from '../const';
 
 
-const initialDateByPeriod = [
+const startDatesPeriods = [
   {
-    period: statsPeriods.ALL_TIME,
+    period: StatPeriod.ALL_TIME,
     getInitialDate: () => null,
   },
   {
-    period: statsPeriods.TODAY,
+    period: StatPeriod.TODAY,
     getInitialDate: () => {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth(), now.getDate());
     }
   },
   {
-    period: statsPeriods.WEEK,
+    period: StatPeriod.WEEK,
     getInitialDate: () => {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
     }
   },
   {
-    period: statsPeriods.MONTH,
+    period: StatPeriod.MONTH,
     getInitialDate: () => {
       const now = new Date();
       return new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
     }
   },
   {
-    period: statsPeriods.YEAR,
+    period: StatPeriod.YEAR,
     getInitialDate: () => {
       const now = new Date();
       return new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
@@ -37,7 +37,7 @@ const initialDateByPeriod = [
 ];
 
 const getWatchedMoviesByPeriod = (movies, activePeriod) => {
-  const {getInitialDate} = initialDateByPeriod.find(({period}) => period === activePeriod);
+  const {getInitialDate} = startDatesPeriods.find(({period}) => period === activePeriod);
   return movies.filter(({watchingDate}) => watchingDate >= getInitialDate());
 };
 
@@ -52,6 +52,14 @@ const countMoviesByGenre = (movies, selectedGenre) => {
 const countGenres = (movies) => {
   const allGenres = movies.reduce((acc, movie) => [...acc, ...movie.filmInfo.genres], []);
   const unicGenres = [...new Set(allGenres)];
+  /*
+    Б34
+    Количество вызовов циклов минимизировано.
+    const countedGenres = unicGenres.reduce((acc, genre) => {
+    return Object.assign(acc, {[genre]: countMoviesByGenre(movies, genre)});
+    }, {});
+    - для каждого жанра обходит весь массив movies
+  */
   const countedGenres = unicGenres.reduce((acc, genre) => {
     return Object.assign(acc, {[genre]: countMoviesByGenre(movies, genre)});
   }, {});
