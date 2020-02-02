@@ -19,6 +19,7 @@ const STORE_COMMENTS_NAME = `cinemaddict-comments-localstorage-v1`;
 const AUTHORIZATION = `Basic mJ7UKvlNLEru54N`;
 const END_POINT = `https://htmlacademy-es-10.appspot.com/cinemaddict`;
 
+
 window.addEventListener(`load`, () => {
   navigator.serviceWorker.register(`/sw.js`)
     .then(() => {

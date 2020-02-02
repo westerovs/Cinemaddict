@@ -20,7 +20,6 @@ export default class PageController {
     this._api = api;
 
     this._films = [];
-    // this._showedFilmsControllers = []; пока закомментирую, так как считаю это лишним свойством. Если к следующей лекции это действительно станет не нужным, то удалю.
     this._allFilmsControllers = [];
     this._showingFilmCardCountByButton = SHOWING_FILM_CARD_COUNT_BY_BUTTON;
 
@@ -115,7 +114,6 @@ export default class PageController {
     const filmsElement = this._filmsComponent.getElement();
 
     const newFilms = renderFilms(container, filmsElement, films, this._onDataChange, this._onViewChange, this._api);
-    // this._showedFilmsControllers = this._showedFilmsControllers.concat(newFilms);
     this._allFilmsControllers = this._allFilmsControllers.concat(newFilms);
   }
 

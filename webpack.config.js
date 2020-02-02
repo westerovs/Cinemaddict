@@ -23,7 +23,7 @@ module.exports = {
   },
   plugins: [
     new MomentLocalesPlugin({
-      localesToKeep: ['es-us'],
+      localesToKeep: [`us`],
     })
   ]
 };
