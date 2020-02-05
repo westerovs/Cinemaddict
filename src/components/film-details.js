@@ -256,6 +256,7 @@ export default class FilmDetails extends AbstractSmartComponent {
     this._closeButtonHandler = null;
 
     this._subscribeOnEvents();
+    this._loading = false;
   }
 
   getTemplate() {
@@ -361,6 +362,9 @@ export default class FilmDetails extends AbstractSmartComponent {
 
   _subscribeOnEvents() {
     this.getElement().querySelector(`.film-details__emoji-list`).addEventListener(`change`, (evt) => {
+      if (this._loading) {
+        return;
+      }
       const emotion = evt.target.value;
       this.emotion = emotion;
       this.rerender();

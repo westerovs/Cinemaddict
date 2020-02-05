@@ -40,6 +40,7 @@ export default class MovieController {
 
       if (isEscKey) {
         closeMovieDetails(evt);
+        console.log(5464526456);
       }
     };
 
@@ -175,12 +176,16 @@ export default class MovieController {
 
     this._movieDetailsComponent.setSubmitCommentHandler((evt) => {
       if (evt.ctrlKey && evt.keyCode === 13) {
+        // ---------------------------------проверять на онлайн, если нет, то не отправлять !
         const emotion = this._movieDetailsComponent.emotion;
         const commentText = this._movieDetailsComponent.commentText;
 
         if (emotion && commentText) {
           this._movieDetailsComponent.getCommentForm().disabled = true;
-
+          this.getElement().querySelectorAll(`.film-details__emoji-item`).forEach((emoji) => {
+            emoji.disabled = true;
+            console.log(emoji);
+          });
           const newComment = new CommentModel({
             'comment': he.encode(commentText),
             'date': new Date(),
