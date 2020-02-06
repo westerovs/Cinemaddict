@@ -1,8 +1,5 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
-* Студент: [Александр Вестеровский](https://up.htmlacademy.ru/ecmascript/10/user/515875).
-* Наставник: [Вениамин Шитиков](https://htmlacademy.ru/profile/id960273).
-
 ---
 
 _Не удаляйте и не изменяйте папки и файлы:_
