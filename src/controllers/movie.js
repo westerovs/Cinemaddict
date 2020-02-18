@@ -40,7 +40,6 @@ export default class MovieController {
 
       if (isEscKey) {
         closeMovieDetails(evt);
-        console.log(5464526456);
       }
     };
 
@@ -184,7 +183,6 @@ export default class MovieController {
           this._movieDetailsComponent.getCommentForm().disabled = true;
           this.getElement().querySelectorAll(`.film-details__emoji-item`).forEach((emoji) => {
             emoji.disabled = true;
-            console.log(emoji);
           });
           const newComment = new CommentModel({
             'comment': he.encode(commentText),
